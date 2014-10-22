@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\DependencyInjection;
+namespace ezobject\WrapperBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
