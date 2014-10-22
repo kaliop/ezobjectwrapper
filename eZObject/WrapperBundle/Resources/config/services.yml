@@ -1,0 +1,7 @@
+parameters:
+    ezobject_wrapper.ezobject_wrapper_factory.class: eZObject\WrapperBundle\Core\eZObjectWrapperFactory
+
+services:
+    ezobject_wrapper.services.factory:
+        class: %ezobject_wrapper.ezobject_wrapper_factory.class%
+        arguments: [@service_container]
