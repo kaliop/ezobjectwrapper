@@ -1,5 +1,5 @@
 parameters:
-    ezobject_wrapper.ezobject_wrapper_factory.class: eZObject\WrapperBundle\Core\eZObjectWrapperFactory
+    ezobject_wrapper.ezobject_wrapper_factory.class: ezobject\WrapperBundle\Core\eZObjectWrapperFactory
 
 services:
     ezobject_wrapper.services.factory:
