@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
  * Class eZObjectWrapperFactory
- * @package eZObject\WrapperBundle\Core
+ * @package ezobject\WrapperBundle\Core
  */
 class eZObjectWrapperFactory
 {
@@ -48,7 +48,7 @@ class eZObjectWrapperFactory
         if(isset($mappingEntities[$contentTypeIdentifier])){
             $className = $mappingEntities[$contentTypeIdentifier];
         } else {
-            $className = 'eZObject\WrapperBundle\Core\eZObjectWrapper';
+            $className = 'ezobject\WrapperBundle\Core\eZObjectWrapper';
         }
 
         $objectWrapper = new $className($this->container, $location->id, $location);
