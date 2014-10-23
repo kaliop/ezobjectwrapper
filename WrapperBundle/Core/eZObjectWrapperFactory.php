@@ -33,15 +33,13 @@ class eZObjectWrapperFactory
 
     /**
      * Create a eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
-     * @param $locationId
+     * @param $location integer|\eZ\Publish\API\Repository\Values\Content\Location
      * @return \eZObject\WrapperBundle\Core\eZObjectWrapper
      */
-    public function buildeZObjectWrapper($locationInfo)
+    public function buildeZObjectWrapper($location)
     {
-        if(is_numeric($locationInfo)){
-            $location = $this->repository->getLocationService()->loadLocation($locationInfo);
-        } else {
-            $location = $locationInfo;
+        if(is_numeric($location)){
+            $location = $this->repository->getLocationService()->loadLocation($location);
         }
 
         $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($location->contentInfo->contentTypeId)->identifier;
