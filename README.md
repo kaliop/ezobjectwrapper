@@ -1,10 +1,10 @@
 ezobject
+=======================
 Symfony Bundle eZObjectWrapperBundle for eZ Publish 5 development eZ 5.3).
 version 1.0 24/10/2014
 
-============================================================================================================
-          DESCRIPTION
-============================================================================================================
+Description
+=======================
 
 This bundle offer a simple model to encapsulate location and content for eZPublish 5 development.
 It provide a factory to build eZObjectWrapper and extended classes. eZObjectWrapper provide a lazy-loading 
@@ -14,9 +14,8 @@ main controller and creating new kernel request. Extended classes are built via 
 It also provide a Twig function, nammed renderLocation, wich use the ViewController as a service, and did not
 relaunch the Symfony kernel, for more efficiency.
 
-============================================================================================================
-          USAGE
-============================================================================================================
+Usage
+=======================
 
 - To build eZObjectWrapper :
 get the service : $factory = $this->container->get('ezobject_wrapper.services.factory');
@@ -34,17 +33,15 @@ parameters:
 - call method or attribute from eZObjectWrapper in Twig :
 {{ ez_field_value(ezObjectWrapper.content, 'title') }}
 
-============================================================================================================
-          INSTALLATION
-============================================================================================================
+Installation
+=======================
 
 Clone this repository under src/ezobject.
 In EzPublishKernel.php, ad the following line in the method "registerBundles()" : 
 new ezobject\WrapperBundle\eZObjectWrapperBundle(),
 
-============================================================================================================
-          CONTACT
-============================================================================================================
+Contact
+=======================
 E-mail : savoie.antonin@gmail.com / asavoie@kaliop.com
 
 
