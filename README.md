@@ -1,7 +1,10 @@
 ezobject
 =======================
 Symfony Bundle eZObjectWrapperBundle for eZ Publish 5 development eZ 5.3).
+
 version 1.0 24/10/2014
+
+Developed in Kaliop's team.
 
 Description
 =======================
