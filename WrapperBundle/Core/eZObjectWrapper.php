@@ -2,6 +2,7 @@
 
 namespace ezobject\WrapperBundle\Core;
 
+use eZ\Publish\API\Repository\Values\Content\Content;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -75,6 +76,15 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Set the wrapper's content
+     * @param  \eZ\Publish\API\Repository\Values\Content\Content $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 }
 

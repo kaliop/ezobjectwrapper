@@ -56,4 +56,27 @@ class eZObjectWrapperFactory
         return $objectWrapper;
     }
 
+    /**
+     * Returns an array of eZObjectWrapper objects - wrapper's location is the content's main location
+     * @param array $contentIds
+     * @return array
+     */
+    public function buildeZObjectWrappersByContentIds(array $contentIds)
+    {
+        $objectWrapperList = array();
+
+        foreach ($contentIds as $contentId) {
+            $content = $this->repository->getContentService()->loadContent($contentId);
+            $contentInfo = $content->contentInfo;
+            if ($contentInfo->mainLocationId !== null) {
+                $location = $this->repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
+                $objectWrapper = $this->buildeZObjectWrapper($location);
+                $objectWrapper->setContent($content);
+                $objectWrapperList[]=$objectWrapper;
+            }
+        }
+
+        return $objectWrapperList;
+    }
+
 }
