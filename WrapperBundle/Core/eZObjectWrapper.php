@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core;
+namespace ezobject\WrapperBundle\Core;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * An entity is an object with a location and his content, available in lazy loading.
  * Class kEntity
- * @package eZObject\WrapperBundle\Core
+ * @package ezobject\WrapperBundle\Core
  */
 class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterface
 {

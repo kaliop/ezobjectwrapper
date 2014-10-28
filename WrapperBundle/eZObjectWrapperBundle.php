@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle;
+namespace ezobject\WrapperBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

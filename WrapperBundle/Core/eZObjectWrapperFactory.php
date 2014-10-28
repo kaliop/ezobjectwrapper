@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
  * Class eZObjectWrapperFactory
- * @package eZObject\WrapperBundle\Core
+ * @package ezobject\WrapperBundle\Core
  */
 class eZObjectWrapperFactory
 {
@@ -33,15 +33,13 @@ class eZObjectWrapperFactory
 
     /**
      * Create a eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
-     * @param $locationId
+     * @param $location integer|\eZ\Publish\API\Repository\Values\Content\Location
      * @return \eZObject\WrapperBundle\Core\eZObjectWrapper
      */
-    public function buildeZObjectWrapper($locationInfo)
+    public function buildeZObjectWrapper($location)
     {
-        if(is_numeric($locationInfo)){
-            $location = $this->repository->getLocationService()->loadLocation($locationInfo);
-        } else {
-            $location = $locationInfo;
+        if(is_numeric($location)){
+            $location = $this->repository->getLocationService()->loadLocation($location);
         }
 
         $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($location->contentInfo->contentTypeId)->identifier;
@@ -50,7 +48,7 @@ class eZObjectWrapperFactory
         if(isset($mappingEntities[$contentTypeIdentifier])){
             $className = $mappingEntities[$contentTypeIdentifier];
         } else {
-            $className = 'eZObject\WrapperBundle\Core\eZObjectWrapper';
+            $className = 'ezobject\WrapperBundle\Core\eZObjectWrapper';
         }
 
         $objectWrapper = new $className($this->container, $location->id, $location);

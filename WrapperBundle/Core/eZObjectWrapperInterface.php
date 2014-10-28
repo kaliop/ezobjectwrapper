@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core;
+namespace ezobject\WrapperBundle\Core;
 
 interface eZObjectWrapperInterface
 {
