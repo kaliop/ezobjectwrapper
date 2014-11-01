@@ -1,0 +1,4 @@
+parameters:
+    default_ezobject_class: ezobject\WrapperBundle\Core\eZObjectWrapper
+#    class_mapping:
+#            article: \Acme\AcmeBundle\eZObjectWrapper\Article

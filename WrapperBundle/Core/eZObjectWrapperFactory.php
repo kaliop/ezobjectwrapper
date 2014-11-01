@@ -44,11 +44,12 @@ class eZObjectWrapperFactory
 
         $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($location->contentInfo->contentTypeId)->identifier;
         $mappingEntities = $this->container->getParameter('class_mapping');
+        $defaultClass = $this->container->getParameter('default_ezobject_class');
 
         if(isset($mappingEntities[$contentTypeIdentifier])){
             $className = $mappingEntities[$contentTypeIdentifier];
         } else {
-            $className = 'ezobject\WrapperBundle\Core\eZObjectWrapper';
+            $className = $defaultClass;
         }
 
         $objectWrapper = new $className($this->container, $location->id, $location);
