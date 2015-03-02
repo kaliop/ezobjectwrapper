@@ -15,5 +15,6 @@
     },
     "autoload": {
         "psr-0": {"eZObject\\WrapperBundle": ""}
-    }
+    },
+    "target-dir": "eZObject"
 }
