@@ -3,6 +3,8 @@
 namespace eZObject\WrapperBundle\Core;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\API\Repository\Values\Content\Location;
+use eZObject\WrapperBundle\Core\Exception\BadParameters;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,14 +26,9 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
     protected $repository;
 
     /**
-     * @var integer
-     */
-    public $locationId;
-
-    /**
      * @var \eZ\Publish\API\Repository\Values\Content\Location
      */
-    public $location;
+    public $location = null;
 
     /**
      * @var \eZ\Publish\API\Repository\Values\Content\Content
@@ -42,20 +39,25 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
     /**
      * Set the repository
      * @param ContainerInterface $container
-     * @param $locationId
-     * @param $location
+     * @param Location $location
+     * @param Content $content
+     * @throws BadParameters
      */
-    public function __construct(ContainerInterface $container, $locationId, $location)
+    public function __construct(ContainerInterface $container, $location = null, $content = null)
     {
+        if($location == null && $content ==  null) {
+            throw new BadParameters();
+        }
+
         $this->container = $container;
         $this->repository = $this->container->get('ezpublish.api.repository');
 
-        $this->locationId = $locationId;
         $this->location = $location;
+        $this->content = $content;
     }
 
     /**
-     * Load the content for the object's location ID if the content is not yet loaded (Lazy Loading)
+     * Return the content of the current location
      * @return \eZ\Publish\API\Repository\Values\Content\Content
      */
     public function content()
@@ -64,6 +66,18 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
             $this->content = $this->repository->getContentService()->loadContent($this->location->contentId);
         }
         return $this->content;
+    }
+
+    /**
+     * Return the MAIN location of the current content
+     * @return \eZ\Publish\API\Repository\Values\Content\Location
+     */
+    public function location()
+    {
+        if($this->location == null){
+            $this->location = $this->repository->getLocationService()->loadLocation($this->content->contentInfo->mainLocationId);
+        }
+        return $this->location;
     }
 
     /**

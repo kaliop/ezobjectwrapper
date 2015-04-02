@@ -2,7 +2,10 @@
 
 namespace eZObject\WrapperBundle\Core;
 
+use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\API\Repository\Values\Content\Location;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Foncia\eZObjectWrapper\HelpBlock;
 
 /**
  * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
@@ -33,16 +36,21 @@ class eZObjectWrapperFactory
 
     /**
      * Create a eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
-     * @param $location integer|\eZ\Publish\API\Repository\Values\Content\Location
+     * @param $source integer|Location|Content
      * @return \eZObject\WrapperBundle\Core\eZObjectWrapper
      */
-    public function buildeZObjectWrapper($location)
+    public function buildeZObjectWrapper($source)
     {
-        if(is_numeric($location)){
-            $location = $this->repository->getLocationService()->loadLocation($location);
+        $locationSource = null;
+        $contentSource = null;
+
+        if(is_numeric($source)) {
+            $locationSource = $source = $this->repository->getLocationService()->loadLocation($source);
+        } elseif($source instanceof Content) {
+            $contentSource = $source;
         }
 
-        $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($location->contentInfo->contentTypeId)->identifier;
+        $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($source->contentInfo->contentTypeId)->identifier;
         $mappingEntities = $this->container->getParameter('class_mapping');
         $defaultClass = $this->container->getParameter('default_ezobject_class');
 
@@ -52,7 +60,7 @@ class eZObjectWrapperFactory
             $className = $defaultClass;
         }
 
-        $objectWrapper = new $className($this->container, $location->id, $location);
+        $objectWrapper = new $className($this->container, $locationSource, $contentSource);
 
         return $objectWrapper;
     }
