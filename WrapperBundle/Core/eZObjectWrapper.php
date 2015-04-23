@@ -28,7 +28,7 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
     /**
      * @var \eZ\Publish\API\Repository\Values\Content\Location
      */
-    public $location = null;
+    protected $location = null;
 
     /**
      * @var \eZ\Publish\API\Repository\Values\Content\Content
