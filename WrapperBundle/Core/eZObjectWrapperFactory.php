@@ -48,6 +48,8 @@ class eZObjectWrapperFactory
             $locationSource = $source = $this->repository->getLocationService()->loadLocation($source);
         } elseif($source instanceof Content) {
             $contentSource = $source;
+        } else {
+            $locationSource = $source;
         }
 
         $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($source->contentInfo->contentTypeId)->identifier;
