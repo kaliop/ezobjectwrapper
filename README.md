@@ -8,12 +8,30 @@ Developed by the [Kaliop](http://www.kaliop.com/) team.
 ## Description
 
 This bundle offers a simple model to encapsulate location and content for eZPublish 5 development.
-It provides a factory to build `eZObjectWrapper` and extended classes. `eZObjectWrapper` provides a lazy-loading 
-method to fetch content. Extended classes can offer method to fetch secondary contents without overloading 
-main controller and creating new kernel request. Extended classes are built via a class_mapping in `parameters.yml`.
+It provides a factory to build `eZObjectWrapper` and extended classes.
 
-It also provide a Twig function, `renderLocation, wich uses the `ViewController` as a service, and doesn't
+`eZObjectWrapper` provides a lazy-loading method to fetch content.
+Extended wrapper classes can for example expose methods to fetch secondary contents without overloading main controller and creating new kernel request.
+
+These extended classes are built via a class_mapping in `eZObjectWrapper.yml`.
+
+This bundle also provides a Twig function, `renderLocation`, wich uses the ViewController as a service, and doesn't
 relaunch the Symfony kernel, for more efficiency.
+
+## Installation
+
+The recommanded way to install this bundle is through [Composer](http://getcomposer.org/). 
+
+Require the `kaliop/ezobjectwrapper` package into your composer.json file : 
+
+```json
+{
+    "require": {
+        "kaliop/ezobjectwrapper": "~1.0"
+    }
+}
+```
+
 
 ## Usage
 ### Building `eZObjectWrapper`
@@ -41,15 +59,7 @@ parameters:
 {{ ez_field_value(ezObjectWrapper.content, 'title') }}
 ```
 
-## Installation
-Clone this repository under `src/ezobject`: `git clone https://github.com/Erilan/ezobject.git src/ezobject`
 
-Register the bundle in `EzPublishKernel.php`, adding this line to `registerBundles()`: 
-```php
-new ezobject\WrapperBundle\eZObjectWrapperBundle(),
-```
 
 ## Contact
-E-mail : savoie.antonin@gmail.com / asavoie@kaliop.com
-
-
+E-mail : asavoie@kaliop.com / sbressey@kaliop.com

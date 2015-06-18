@@ -1,17 +1,17 @@
 {
-    "name": "ezobject/wrapperbundle",
-    "description": "eZObjectWrapper bunndle",
+    "name": "kaliop/ezobjectwrapper",
+    "description": "eZObjectWrapper bundle",
     "license": "GPL-2.0",
     "authors": [
         {
-            "name": "Kaliop",
-            "homepage": "http://stash.kaliop.net/"
+            "name": "Kaliop team",
+            "homepage": "http://www.kaliop.com/"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "ezsystems/ezpublish-kernel": "*"
+        "ezsystems/ezpublish-kernel": "~5.*|>=2014.03"
     },
     "autoload": {
         "psr-0": {"eZObject\\WrapperBundle": ""}
