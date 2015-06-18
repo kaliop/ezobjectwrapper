@@ -26,6 +26,9 @@ Require the `kaliop/ezobjectwrapper` package into your composer.json file :
 
 ```json
 {
+	"repositories": [
+        { "type": "vcs", "url": "ssh://git@github.com/kaliop/ezobjectwrapper.git" }
+    ],
     "require": {
         "kaliop/ezobjectwrapper": "~1.0"
     }
