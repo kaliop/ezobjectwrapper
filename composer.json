@@ -9,7 +9,6 @@
             "homepage": "http://www.kaliop.com/"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
         "ezsystems/ezpublish-kernel": ">=5.3|>=2014.03"
