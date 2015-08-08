@@ -22,7 +22,7 @@ relaunch the Symfony kernel, for more efficiency.
 
 The recommanded way to install this bundle is through [Composer](http://getcomposer.org/). 
 
-Require the `kaliop/ezobjectwrapper` package into your composer.json file : 
+* Require the `ezobject/wrapperbundle` package into your composer.json file :
 
 ```json
 {
@@ -30,11 +30,16 @@ Require the `kaliop/ezobjectwrapper` package into your composer.json file :
         { "type": "vcs", "url": "https://github.com/kaliop/ezobjectwrapper.git" }
     ],
     "require": {
-        "kaliop/ezobjectwrapper": "~1.0"
+        "ezobject/wrapperbundle": "~1.0"
     }
 }
 ```
 
+* Add eZObjectWrapperBundle into EzPublishKernel.php: 
+
+```php
+new \eZObject\WrapperBundle\eZObjectWrapperBundle()
+```
 
 ## Usage
 ### Building `eZObjectWrapper`
