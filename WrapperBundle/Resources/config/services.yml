@@ -7,6 +7,6 @@ services:
         arguments: [@service_container]
     twig.extension.eZObjectWrapper:
         class: eZObject\WrapperBundle\Twig\eZObjectWrapperExtension
-        arguments: [@service_container]
+        arguments: [@ez_content]
         tags:
             - { name: twig.extension }
