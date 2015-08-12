@@ -8,5 +8,6 @@ services:
     twig.extension.eZObjectWrapper:
         class: eZObject\WrapperBundle\Twig\eZObjectWrapperExtension
         arguments: [@ezpublish.controller.content.view]
+        lazy: true
         tags:
             - { name: twig.extension }
