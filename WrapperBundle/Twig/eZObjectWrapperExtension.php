@@ -2,23 +2,19 @@
 
 namespace eZObject\WrapperBundle\Twig;
 
-use eZ\Publish\API\Repository\Values\Content\Content;
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\Core\MVC\Symfony\Controller\Content\ViewController;
-use eZ\Publish\Core\MVC\Symfony\View\Provider\Location\Configured;
-use eZSys;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 class eZObjectWrapperExtension extends \Twig_Extension
 {
     /**
-     * @var ViewController
+     * @var ContainerInterface
      */
-   private $viewController;
+    private $container;
 
-    public function __construct(\eZ\Publish\Core\MVC\Symfony\Controller\Content\ViewController $viewController) {
+    public function __construct(ContainerInterface $container) {
 
-      $this->viewController = $viewController;
+        $this->container = $container;
 
     }
 
@@ -34,7 +30,7 @@ class eZObjectWrapperExtension extends \Twig_Extension
      * @return string
      */
     public function renderLocation($locationID, $viewType, $params = array()) {
-        $rendering = $this->viewController->viewLocation($locationID, $viewType, false, $params);
+        $rendering = $this->container->get('ezpublish.controller.content.view')->viewLocation($locationID, $viewType, false, $params);
 
         return htmlspecialchars_decode($rendering->getContent());
     }
