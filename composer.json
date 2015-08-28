@@ -14,7 +14,7 @@
         "ezsystems/ezpublish-kernel": ">=5.3|>=2014.03"
     },
     "autoload": {
-        "psr-0": {"eZObject\\WrapperBundle": ""}
+        "psr-4": {"Kaliop\\eZObjectWrapperBundle\\": ""}
     },
     "target-dir": "eZObject"
 }

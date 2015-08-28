@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\DependencyInjection;
+namespace Kaliop\eZObjectWrapperBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('e_z_object_wrapper');
 
-        // TODO => semeantic configuration
+        // TODO => semantic configuration
 //        $rootNode
 //            ->children()
 //                ->arrayNode('class_mapping')->end()

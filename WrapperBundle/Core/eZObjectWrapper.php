@@ -1,17 +1,17 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core;
+namespace Kaliop\eZObjectWrapperBundle\Core;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
-use eZObject\WrapperBundle\Core\Exception\BadParameters;
+use Kaliop\eZObjectWrapperBundle\Core\Exception\BadParameters;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * An entity is an object with a location and his content, available in lazy loading.
  * Class kEntity
- * @package ezobject\WrapperBundle\Core
+ * @package Kaliop\eZObjectWrapperBundle\Core
  */
 class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterface
 {
