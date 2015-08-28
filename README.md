@@ -1,9 +1,9 @@
-# ezobject
-Symfony Bundle eZObjectWrapperBundle for eZ Publish 5 development (>=5.3).
+# eZObjectWrapperBundle
 
-version 1.0 24/10/2014
+A Symfony Bundle for eZ Publish 5 development (>=5.3).
 
 Developed by the [Kaliop](http://www.kaliop.com/) team.
+
 
 ## Description
 
@@ -17,6 +17,7 @@ These extended classes are built via a class_mapping in `eZObjectWrapper.yml`.
 
 This bundle also provides a Twig function, `renderLocation`, wich uses the ViewController as a service, and doesn't
 relaunch the Symfony kernel, for more efficiency.
+
 
 ## Installation
 
@@ -42,6 +43,7 @@ new \eZObject\WrapperBundle\eZObjectWrapperBundle()
 ```
 
 ## Usage
+
 ### Building `eZObjectWrapper`
 ```php
 // get the service
@@ -66,8 +68,6 @@ parameters:
 ```twig
 {{ ez_field_value(ezObjectWrapper.content, 'title') }}
 ```
-
-
 
 
 ## Contact
