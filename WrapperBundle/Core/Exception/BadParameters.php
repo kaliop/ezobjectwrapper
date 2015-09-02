@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core\Exception;
+namespace Kaliop\eZObjectWrapperBundle\Core\Exception;
 
 use Exception;
 

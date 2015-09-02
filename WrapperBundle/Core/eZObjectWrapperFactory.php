@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core;
+namespace Kaliop\eZObjectWrapperBundle\Core;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
@@ -10,7 +10,7 @@ use Foncia\eZObjectWrapper\HelpBlock;
 /**
  * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
  * Class eZObjectWrapperFactory
- * @package ezobject\WrapperBundle\Core
+ * @package Kaliop\eZObjectWrapperBundle\Core
  */
 class eZObjectWrapperFactory
 {
@@ -37,7 +37,7 @@ class eZObjectWrapperFactory
     /**
      * Create a eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
      * @param $source integer|Location|Content
-     * @return \eZObject\WrapperBundle\Core\eZObjectWrapper
+     * @return \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper
      */
     public function buildeZObjectWrapper($source)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Core;
+namespace Kaliop\eZObjectWrapperBundle\Core;
 
 interface eZObjectWrapperInterface
 {

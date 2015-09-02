@@ -1,6 +1,6 @@
 <?php
 
-namespace eZObject\WrapperBundle\Twig;
+namespace Kaliop\eZObjectWrapperBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

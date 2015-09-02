@@ -39,7 +39,7 @@ The recommanded way to install this bundle is through [Composer](http://getcompo
 * Add eZObjectWrapperBundle into EzPublishKernel.php: 
 
 ```php
-new \eZObject\WrapperBundle\eZObjectWrapperBundle()
+new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle()
 ```
 
 ## Usage
