@@ -1,7 +1,7 @@
 {
-    "name": "ezobject/wrapperbundle",
+    "name": "kaliop/ezobjectwrapperbundle",
     "type": "symfony-bundle",
-    "description": "Create wrappers for your ezpublish 5 content/location objects",
+    "description": "Easy wrappers for your eZPublish 5 content/location objects",
     "license": "GPL-2.0",
     "authors": [
         {
