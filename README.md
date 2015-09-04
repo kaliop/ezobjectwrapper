@@ -29,7 +29,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 ```json
 {
     "require": {
-        "kaliop/ezobjectwrapperbundle": "~1.0"
+        "kaliop/ezobjectwrapperbundle": "~2.0"
     }
 }
 ```
@@ -37,7 +37,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 * Add eZObjectWrapperBundle into EzPublishKernel.php: 
 
 ```php
-new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle()
+new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle(),
 ```
 
 ## Usage
