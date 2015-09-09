@@ -1,20 +1,20 @@
 {
-    "name": "ezobject/wrapperbundle",
-    "description": "eZObjectWrapper bunndle",
+    "name": "kaliop/ezobjectwrapperbundle",
+    "type": "symfony-bundle",
+    "description": "Easy wrappers for your eZPublish 5 content/location objects",
     "license": "GPL-2.0",
     "authors": [
         {
             "name": "Kaliop",
-            "homepage": "http://stash.kaliop.net/"
+            "homepage": "http://www.kaliop.com/"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "ezsystems/ezpublish-kernel": "*"
+        "ezsystems/ezpublish-kernel": ">=5.3|>=2014.03"
     },
     "autoload": {
-        "psr-0": {"eZObject\\WrapperBundle": ""}
-    },
-    "target-dir": "eZObject"
+        "psr-4": {"Kaliop\\eZObjectWrapperBundle\\": "WrapperBundle"}
+    }
 }
