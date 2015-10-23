@@ -7,14 +7,15 @@ Developed by the [Kaliop](http://www.kaliop.com/) team.
 
 ## Description
 
-This bundle offers a simple model to encapsulate location and content for eZPublish 5 development.
+This bundle offers a simple model to encapsulate location and content.
 It provides a factory to build `eZObjectWrapper` and extended classes.
 
 `eZObjectWrapper` provides a lazy-loading method to fetch content.
-Extended wrapper classes can for example expose methods to fetch secondary contents without overloading main controller
-and creating new kernel request.
+Extended wrapper classes can for example add methods to fetch secondary contents without overloading the main controller
+and creating a new kernel request.
 
-These extended classes are built via a class_mapping in `eZObjectWrapper.yml`.
+The extended classes are built via the class_map configuration in the  `ezobject_wrapper` namespace.
+They can also be declared as services and built using the service_map configuration.
 
 This bundle also provides a Twig function, `renderLocation`, which uses the ViewController as a service, and doesn't
 relaunch the Symfony kernel, for more efficiency.
@@ -29,7 +30,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 ```json
 {
     "require": {
-        "kaliop/ezobjectwrapperbundle": "~2.0"
+        "kaliop/ezobjectwrapperbundle": "~3.0"
     }
 }
 ```
@@ -42,21 +43,21 @@ new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle(),
 
 ## Usage
 
+### Configuration
+
+```yml
+ezobject_wrapper:
+    class_map:
+        article: \Acme\AcmeBundle\eZObjectWrapper\Article
+```
+
 ### Building `eZObjectWrapper`
 
 ```php
 // get the service
-$factory = $this->container->get('ezobject_wrapper.services.factory');
-// build accepts Location or locationID as parameter
-$factory->buildeZObjectWrapper($location);
-```
-
-### Class mapping
-
-```yml
-parameters:
-    class_mapping:
-        content_identifier: \myGreat\BundleBundle\eZObjectWrapper\ClassesExtendingeZObjectWrapper
+$factory = $this->container->get('ezobject_wrapper.factory');
+// build accepts a Location or locationID as parameter
+$factory->buildWrapper($location);
 ```
 
 ### renderLocation

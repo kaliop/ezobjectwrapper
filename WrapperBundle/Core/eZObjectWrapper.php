@@ -5,21 +5,13 @@ namespace Kaliop\eZObjectWrapperBundle\Core;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use Kaliop\eZObjectWrapperBundle\Core\Exception\BadParameters;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use \eZ\Publish\API\Repository\Repository;
 
 /**
- * An entity is an object with a location and his content, available in lazy loading.
- * Class kEntity
- * @package Kaliop\eZObjectWrapperBundle\Core
+ * A wrapper entity is an object with a location and its content, available via lazy loading.
  */
-class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterface
+class eZObjectWrapper implements eZObjectWrapperInterface
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
     /**
      * @var \eZ\Publish\API\Repository\Repository
      */
@@ -38,22 +30,26 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
 
     /**
      * Set the repository
-     * @param ContainerInterface $container
-     * @param Location $location
-     * @param Content $content
+     * @param Repository $repository
      * @throws BadParameters
      */
-    public function __construct(ContainerInterface $container, $location = null, $content = null)
+    public function __construct(Repository $repository)
     {
-        if($location == null && $content ==  null) {
-            throw new BadParameters();
-        }
+        $this->repository = $repository;
+    }
 
-        $this->container = $container;
-        $this->repository = $this->container->get('ezpublish.api.repository');
-
-        $this->location = $location;
+    public function initFromContent(Content $content)
+    {
         $this->content = $content;
+        $this->location = null;
+        return $this;
+    }
+
+    public function initFromLocation(Location $location)
+    {
+        $this->content = null;
+        $this->location = $location;
+        return $this;
     }
 
     /**
@@ -69,7 +65,7 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
     }
 
     /**
-     * Return the MAIN location of the current content
+     * NB: if wrapper has been created from a Content, returns its MAIN location
      * @return \eZ\Publish\API\Repository\Values\Content\Location
      */
     public function location()
@@ -79,26 +75,4 @@ class eZObjectWrapper implements eZObjectWrapperInterface, ContainerAwareInterfa
         }
         return $this->location;
     }
-
-    /**
-     * Sets the Container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     *
-     * @api
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * Set the wrapper's content
-     * @param  \eZ\Publish\API\Repository\Values\Content\Content $content
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
 }
-

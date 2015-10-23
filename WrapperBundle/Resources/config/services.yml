@@ -1,10 +1,27 @@
 parameters:
-    ezobject_wrapper.ezobject_wrapper_factory.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperFactory
+    ezobject_wrapper.factory.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperFactory
+    ezobject_wrapper.wrapper.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperService
 
 services:
-    ezobject_wrapper.services.factory:
-        class: %ezobject_wrapper.ezobject_wrapper_factory.class%
-        arguments: [@service_container]
+    # This service is configured via the ezobject_wrapper semantic configuration
+    ezobject_wrapper.factory:
+        class: %ezobject_wrapper.factory.class%
+        arguments: [@ezpublish.api.repository]
+
+    # To have services used to instantiate wrapper instances, you can subclass this service
+    # and declare the new services in the service_map configuration
+    ezobject_wrapper.wrapper.abstract:
+        class: %ezobject_wrapper.wrapper.abstract.class%
+        arguments: [@ezpublish.api.repository]
+        abstract: true
+
+    # Example:
+    #ezobject_wrapper.wrapper.news:
+    #    class: %ezobject_wrapper.wrapper.news.class%
+    #    parent: ezobject_wrapper.wrapper.abstract
+    #    calls:
+    #        - [setMailer, ["@my_mailer"]]
+
     twig.extension.eZObjectWrapper:
         class: Kaliop\eZObjectWrapperBundle\Twig\eZObjectWrapperExtension
         arguments: [@service_container]

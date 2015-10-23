@@ -1,0 +1,10 @@
+ezobject_wrapper:
+    default_wrapper_class: \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper
+    # A list of class names used to implement wrappers for specific conntent types.
+    # The easiest way to create them is to subclass eZObjectWrapper
+    class_map:
+        article: \Acme\AcmeBundle\eZObjectWrapper\Article
+    # For more complex cases: a list of service names used to implement wrappers for specific contntent types
+    # (this allows to have a different constructor / inject more stuff into the wrapper objects)
+    service_map:
+        image: ezobject_wrapper.wrapper.image
