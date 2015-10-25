@@ -25,14 +25,14 @@ class eZObjectWrapperService extends eZObjectWrapper
 
     public function initFromContent(Content $content)
     {
-        $wrapper = new self($this->repository);
+        $wrapper = new static($this->repository);
         $wrapper->init($content, null);
         return $wrapper;
     }
 
     public function initFromLocation(Location $location)
     {
-        $wrapper = new self($this->repository);
+        $wrapper = new static($this->repository);
         $wrapper->init(null, $location);
         return $wrapper;
     }

@@ -58,7 +58,7 @@ class KaliopeZObjectWrapperExtension extends Extension
 
             foreach ($config['service_map'] as $type => $service) {
                 $factoryDefinition
-                    ->addMethodCall('registerClass', array(new Reference($service), $type));
+                    ->addMethodCall('registerService', array(new Reference($service), $type));
             }
         }
     }
