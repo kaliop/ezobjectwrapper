@@ -1,6 +1,6 @@
 parameters:
     ezobject_wrapper.factory.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperFactory
-    ezobject_wrapper.wrapper.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperService
+    ezobject_wrapper.wrapper.abstract.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperService
 
 services:
     # This service is configured via the ezobject_wrapper semantic configuration

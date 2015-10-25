@@ -18,6 +18,11 @@ class KaliopeZObjectWrapperExtension extends Extension
 {
     protected $factoryService = 'ezobject_wrapper.factory';
 
+    public function getAlias()
+    {
+        return 'ezobject_wrapper';
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -28,13 +33,14 @@ class KaliopeZObjectWrapperExtension extends Extension
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
         $this->injectConfiguration($config, $container);
     }
 
     protected function injectConfiguration(array $config, ContainerBuilder $container)
     {
         if (!isset($config['class_map'])) {
-            throw new InvalidConfigurationException("Missing 'data_map' configuration for 'ezobject_wrapper'");
+            throw new InvalidConfigurationException("Missing 'class_map' configuration for 'ezobject_wrapper'");
         }
         if (!isset($config['service_map'])) {
             throw new InvalidConfigurationException("Missing 'service_map' configuration for 'ezobject_wrapper'");
