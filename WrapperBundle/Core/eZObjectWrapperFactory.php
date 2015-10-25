@@ -60,7 +60,7 @@ class eZObjectWrapperFactory
      * @return \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperInterface
      * @throws \Exception and many others
      */
-    public function buildWrapper($source)
+    public function build($source)
     {
         $locationSource = null;
         $contentSource = null;
@@ -92,31 +92,59 @@ class eZObjectWrapperFactory
                 throw new \Exception("Can not build an eZObjectWrapper out of content: no mapped class available for content type $contentTypeId");
             }
 
-            $objectWrapper = new $className();
+            $objectWrapper = new $className($this->repository);
         }
 
         if ($locationSource !== null) {
-            return $objectWrapper->initFromLocation($source);
+            return $objectWrapper->initFromLocation($locationSource);
         } elseif ($source instanceof Content) {
-            $objectWrapper->initFromContent($source);
+            return $objectWrapper->initFromContent($contentSource);
         }
-
     }
 
     /**
      * Returns an array of eZObjectWrapperInterface objects
-     * @param array $sources
+     * @param array $sources can be Content, Location or
      * @return eZObjectWrapperInterface[]
      */
-    public function buildWrappers(array $sources)
+    public function buildFromArray(array $sources)
     {
         $objectWrapperList = array();
 
         foreach ($sources as $id => $source) {
-            $objectWrapperList[$id] = $this->buildWrapper($source);
+            $objectWrapperList[$id] = $this->build($source);
         }
 
         return $objectWrapperList;
     }
 
+    /**
+     * @param mixed $id
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromContentId($id)
+    {
+        return $this->build($this->repository->getContentService()->loadContent($id));
+    }
+
+    /**
+     * @param mixed $remoteId
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromContentRemoteId($remoteId)
+    {
+        return $this->build($this->repository->getContentService()->loadContentByRemoteId($remoteId));
+    }
+
+    /**
+     * @param mixed $remoteId
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromLocationRemoteId($remoteId)
+    {
+        return $this->build($this->repository->getLocationService()->loadLocationByRemoteId($remoteId));
+    }
 }
