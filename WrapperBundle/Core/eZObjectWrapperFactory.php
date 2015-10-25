@@ -6,7 +6,7 @@ use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use \eZ\Publish\API\Repository\Repository;
 
-class eZObjectWrapperFactory
+class eZObjectWrapperFactory implements eZObjectWrapperFactoryInterface
 {
 
     /**
@@ -28,21 +28,21 @@ class eZObjectWrapperFactory
     /**
      * Registers an existing service to be used as wrapper for a given content type
      * @var $service
-     * @var string $contentIdentifier
+     * @var string $contentTypeIdentifier
      */
-    public function registerService($service, $contentIdentifier)
+    public function registerService($service, $contentTypeIdentifier)
     {
-        $this->serviceMap[$contentIdentifier] = $service;
+        $this->serviceMap[$contentTypeIdentifier] = $service;
     }
 
     /**
      * Registers a php class to be used as wrapper for a given content type
      * @var string $className
-     * @var string $contentIdentifier
+     * @var string $contentTypeIdentifier
      */
-    public function registerClass($className, $contentIdentifier)
+    public function registerClass($className, $contentTypeIdentifier)
     {
-        $this->classMap[$contentIdentifier] = $className;
+        $this->classMap[$contentTypeIdentifier] = $className;
     }
 
     /**
