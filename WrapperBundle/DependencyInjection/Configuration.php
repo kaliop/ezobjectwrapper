@@ -18,13 +18,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('e_z_object_wrapper');
+        $rootNode = $treeBuilder->root('ezobject_wrapper');
 
-        // TODO => semantic configuration
-//        $rootNode
-//            ->children()
-//                ->arrayNode('class_mapping')->end()
-//            ->end();
+        $rootNode
+            ->children()
+                ->scalarNode('default_wrapper_class')->defaultValue('\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper')->end()
+                ->arrayNode('class_map')->isRequired()->prototype('scalar')->end()->end()
+            ->end();
 
         return $treeBuilder;
     }

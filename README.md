@@ -7,17 +7,21 @@ Developed by the [Kaliop](http://www.kaliop.com/) team.
 
 ## Description
 
-This bundle offers a simple model to encapsulate location and content for eZPublish 5 development.
-It provides a factory to build `eZObjectWrapper` and extended classes.
+This bundle offers a simple model to encapsulate and lazy-load Location and Content objects in a single `wrapper`
+object.
 
-`eZObjectWrapper` provides a lazy-loading method to fetch content.
-Extended wrapper classes can for example expose methods to fetch secondary contents without overloading main controller
-and creating new kernel request.
+The default encapsulating class is `eZObjectWrapper`, and can be extended (subclassed) by the user.
 
-These extended classes are built via a class_mapping in `eZObjectWrapper.yml`.
+Extended wrapper classes can for example add methods to fetch secondary contents or return derived values
+which depend on the fields which make up the content. These will be computed without overloading the main controller
+and creating a new kernel request.
 
-This bundle also provides a Twig function, `renderLocation`, which uses the ViewController as a service, and doesn't
-relaunch the Symfony kernel, for more efficiency.
+The bundle provides a factory class, exposed as a service, to build `eZObjectWrapper` and extended classes.
+The extended classes to be built are set up via the class_map configuration in the  `ezobject_wrapper` namespace.
+They can also be declared as services and tagged to be used as wrappers by using the `ezobject_wrapper.wrapper` tag.
+
+This bundle also provides a Twig function, `render_location`, which uses the ViewController as a service, and doesn't
+re-execute the Symfony kernel, which can be more efficient in many cases.
 
 
 ## Installation
@@ -29,7 +33,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 ```json
 {
     "require": {
-        "kaliop/ezobjectwrapperbundle": "~2.0"
+        "kaliop/ezobjectwrapperbundle": "~3.0"
     }
 }
 ```
@@ -42,34 +46,51 @@ new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle(),
 
 ## Usage
 
-### Building `eZObjectWrapper`
-
-```php
-// get the service
-$factory = $this->container->get('ezobject_wrapper.services.factory');
-// build accepts Location or locationID as parameter
-$factory->buildeZObjectWrapper($location);
-```
-
-### Class mapping
+### Configuration
 
 ```yml
-parameters:
-    class_mapping:
-        content_identifier: \myGreat\BundleBundle\eZObjectWrapper\ClassesExtendingeZObjectWrapper
+ezobject_wrapper:
+    class_map:
+        article: \Acme\AcmeBundle\eZObjectWrapper\Article
 ```
 
-### renderLocation
+### Building `eZObjectWrapper` instances
+
+```php
+// get the factory service
+$factory = $this->container->get('ezobject_wrapper.factory');
+// 'build' accepts a Content, Location or LocationId as parameter
+$factory->build($location);
+```
+
+You can also easily build wrapper instances out of arrays of Content/Location/LocationId, or from Remote Ids. 
+
+### Calling methods or accessing attributes of an `eZObjectWrapper` in Twig
 
 ```twig
-{{ renderLocation(locationId, 'view_type', { ezObjectWrapper : myObject }) |raw }}
+{{ ez_field_value(wrapper.content, 'title') }}
 ```
 
-### Call method or attribute from eZObjectWrapper in Twig
+### render_location twig helper
 
 ```twig
-{{ ez_field_value(ezObjectWrapper.content, 'title') }}
+{# the 3rd argument is an array of parameters, we can pass the current wrapper as a variable named 'wrapper' to the view template #}
+{{ render_location(wrapper.location.id, 'view_type', { wrapper : wrapper }) }}
 ```
+
+## Impact with the caches (a.k.a. don't shoot yourself in the foot)
+
+When using the `render_location` twig helper, or using subclasses of `eZObjectWrapper` which fetch other Content objects
+in helper methods, be aware that you are introducing caching dependencies.
+
+eZPublish by default goes to great lengths to make sure that the caches which keep the 'html version' of Content objects
+are automatically expired whenever the objects are edited. One might say that view-cache-expiration is the prime reason
+for using Symfony sub-requests when displaying a list of Content objects.
+
+Whenever you end up displaying a Location which is not the current one, remember to add its Id to the X-Location-Id header
+in your main controller response, so that eZPublish will know when to clear its cache. 
+
+For more details see: https://doc.ez.no/display/EZP/HttpCache
 
 
 ## Contact

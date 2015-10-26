@@ -4,90 +4,147 @@ namespace Kaliop\eZObjectWrapperBundle\Core;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Foncia\eZObjectWrapper\HelpBlock;
+use \eZ\Publish\API\Repository\Repository;
 
-/**
- * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
- * Class eZObjectWrapperFactory
- * @package Kaliop\eZObjectWrapperBundle\Core
- */
-class eZObjectWrapperFactory
+class eZObjectWrapperFactory implements eZObjectWrapperFactoryInterface
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private $container;
 
     /**
      * @var \eZ\Publish\API\Repository\Repository
      */
-    private $repository;
+    protected $repository;
+    protected $classMap = array();
+    protected $serviceMap = array();
+    protected $defaultClass;
 
     /**
-     * set the repository
-     * @param ContainerInterface $container
+     * @param Repository $repository
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Repository $repository)
     {
-        $this->container = $container;
-        $this->repository = $this->container->get('ezpublish.api.repository');
+        $this->repository = $repository;
     }
 
     /**
-     * Create a eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
-     * @param $source integer|Location|Content
-     * @return \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper
+     * Registers an existing service to be used as wrapper for a given content type
+     * @var $service
+     * @var string $contentTypeIdentifier
      */
-    public function buildeZObjectWrapper($source)
+    public function registerService($service, $contentTypeIdentifier)
+    {
+        $this->serviceMap[$contentTypeIdentifier] = $service;
+    }
+
+    /**
+     * Registers a php class to be used as wrapper for a given content type
+     * @var string $className
+     * @var string $contentTypeIdentifier
+     */
+    public function registerClass($className, $contentTypeIdentifier)
+    {
+        $this->classMap[$contentTypeIdentifier] = $className;
+    }
+
+    /**
+     * Registers a php class to be used as default wrapper
+     * @var string $className
+     */
+    public function registerDefaultClass($className)
+    {
+        $this->defaultClass = $className;
+    }
+
+    /**
+     * Create an eZObjectWrapper object, or a child class of eZObjectWrapper, according to parameters set in eZObjectWrapper.yml
+     * @param integer|Location|Content $source when integer, a Location Id is supposed
+     * @return \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperInterface
+     * @throws \Exception and many others
+     */
+    public function build($source)
     {
         $locationSource = null;
         $contentSource = null;
 
-        if(is_numeric($source)) {
-            $locationSource = $source = $this->repository->getLocationService()->loadLocation($source);
-        } elseif($source instanceof Content) {
+        if (is_numeric($source)) {
+            $source = $this->repository->getLocationService()->loadLocation($source);
+        }
+        if ($source instanceof Location) {
+            $locationSource = $source;
+        } elseif ($source instanceof Content) {
             $contentSource = $source;
         } else {
-            $locationSource = $source;
+            throw new \Exception("Can not build an eZObjectWrapper out of a: " . gettype($source));
         }
 
-        $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($source->contentInfo->contentTypeId)->identifier;
-        $mappingEntities = $this->container->getParameter('class_mapping');
-        $defaultClass = $this->container->getParameter('default_ezobject_class');
+        $contentTypeId = $source->contentInfo->contentTypeId;
+        $contentTypeIdentifier = $this->repository->getContentTypeService()->loadContentType($contentTypeId)->identifier;
 
-        if(isset($mappingEntities[$contentTypeIdentifier])){
-            $className = $mappingEntities[$contentTypeIdentifier];
+        if (isset($this->serviceMap[$contentTypeIdentifier])) {
+
+            $objectWrapper = $this->serviceMap[$contentTypeIdentifier];
+
         } else {
-            $className = $defaultClass;
+            if (isset($this->classMap[$contentTypeIdentifier])) {
+                $className = $this->classMap[$contentTypeIdentifier];
+            } elseif ($this->defaultClass != '') {
+                $className = $this->defaultClass ;
+            } else {
+                throw new \Exception("Can not build an eZObjectWrapper out of content: no mapped class available for content type $contentTypeId");
+            }
+
+            $objectWrapper = new $className($this->repository);
         }
 
-        $objectWrapper = new $className($this->container, $locationSource, $contentSource);
-
-        return $objectWrapper;
+        if ($locationSource !== null) {
+            return $objectWrapper->initFromLocation($locationSource);
+        } elseif ($source instanceof Content) {
+            return $objectWrapper->initFromContent($contentSource);
+        }
     }
 
     /**
-     * Returns an array of eZObjectWrapper objects - wrapper's location is the content's main location
-     * @param array $contentIds
-     * @return array
+     * Returns an array of eZObjectWrapperInterface objects
+     * @param array $sources can be Content, Location or
+     * @return eZObjectWrapperInterface[]
      */
-    public function buildeZObjectWrappersByContentIds(array $contentIds)
+    public function buildFromArray(array $sources)
     {
         $objectWrapperList = array();
 
-        foreach ($contentIds as $contentId) {
-            $content = $this->repository->getContentService()->loadContent($contentId);
-            $contentInfo = $content->contentInfo;
-            if ($contentInfo->mainLocationId !== null) {
-                $location = $this->repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
-                $objectWrapper = $this->buildeZObjectWrapper($location);
-                $objectWrapper->setContent($content);
-                $objectWrapperList[]=$objectWrapper;
-            }
+        foreach ($sources as $id => $source) {
+            $objectWrapperList[$id] = $this->build($source);
         }
 
         return $objectWrapperList;
     }
 
+    /**
+     * @param mixed $id
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromContentId($id)
+    {
+        return $this->build($this->repository->getContentService()->loadContent($id));
+    }
+
+    /**
+     * @param mixed $remoteId
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromContentRemoteId($remoteId)
+    {
+        return $this->build($this->repository->getContentService()->loadContentByRemoteId($remoteId));
+    }
+
+    /**
+     * @param mixed $remoteId
+     * @return eZObjectWrapperInterface
+     * @throws \Exception
+     */
+    public function buildFromLocationRemoteId($remoteId)
+    {
+        return $this->build($this->repository->getLocationService()->loadLocationByRemoteId($remoteId));
+    }
 }
