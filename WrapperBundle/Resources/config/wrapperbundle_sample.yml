@@ -1,10 +1,22 @@
+# Sample configuration for this bundle.
+# NB: this file is NOT active as is, it is just here as example documentation.
+
 ezobject_wrapper:
+
+    # The default wrapper class to be used for all content types which have no explicit mapping
     default_wrapper_class: \Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper
-    # A list of class names used to implement wrappers for specific conntent types.
+
+    # A list of class names used to implement wrappers for specific content types.
     # The easiest way to create them is to subclass eZObjectWrapper
     class_map:
         article: \Acme\AcmeBundle\eZObjectWrapper\Article
-    # For more complex cases: a list of service names used to implement wrappers for specific contntent types
-    # (this allows to have a different constructor / inject more stuff into the wrapper objects)
-    service_map:
-        image: ezobject_wrapper.wrapper.image
+
+# For more complex cases: tag services to be used as Wrappers
+# (this allows to have a different constructor / inject more stuff into the wrapper objects)
+# The easiest way to create them is to subclass eZObjectWrapperService, and declare the services as children of ezobject_wrapper.wrapper.abstract
+services:
+    ezobject_wrapper.wrapper.landing_page:
+        class: \Acme\AcmeBundle\eZObjectWrapper\LandingPage
+        parent: ezobject_wrapper.wrapper.abstract
+        tags:
+            -  { name: ezobject_wrapper.wrapper, content_type: landing_page }

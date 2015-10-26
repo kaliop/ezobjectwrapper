@@ -24,7 +24,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('default_wrapper_class')->defaultValue('\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper')->end()
                 ->arrayNode('class_map')->isRequired()->prototype('scalar')->end()->end()
-                ->arrayNode('service_map')->isRequired()->prototype('scalar')->end()->end()
             ->end();
 
         return $treeBuilder;

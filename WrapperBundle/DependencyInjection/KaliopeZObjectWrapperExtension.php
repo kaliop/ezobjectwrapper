@@ -42,9 +42,6 @@ class KaliopeZObjectWrapperExtension extends Extension
         if (!isset($config['class_map'])) {
             throw new InvalidConfigurationException("Missing 'class_map' configuration for 'ezobject_wrapper'");
         }
-        if (!isset($config['service_map'])) {
-            throw new InvalidConfigurationException("Missing 'service_map' configuration for 'ezobject_wrapper'");
-        }
         $factoryDefinition = null;
         if ($container->hasDefinition($this->factoryService)) {
             $factoryDefinition = $container->findDefinition($this->factoryService);
@@ -54,11 +51,6 @@ class KaliopeZObjectWrapperExtension extends Extension
             foreach ($config['class_map'] as $type => $class) {
                 $factoryDefinition
                     ->addMethodCall('registerClass', array($class, $type));
-            }
-
-            foreach ($config['service_map'] as $type => $service) {
-                $factoryDefinition
-                    ->addMethodCall('registerService', array(new Reference($service), $type));
             }
         }
     }

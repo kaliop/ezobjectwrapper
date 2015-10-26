@@ -24,6 +24,6 @@ services:
 
     twig.extension.eZObjectWrapper:
         class: Kaliop\eZObjectWrapperBundle\Twig\eZObjectWrapperExtension
-        arguments: [@service_container]
+        arguments: [@ezpublish.controller.content.view]
         tags:
             - { name: twig.extension }

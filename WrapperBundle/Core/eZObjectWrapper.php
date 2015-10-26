@@ -8,7 +8,7 @@ use Kaliop\eZObjectWrapperBundle\Core\Exception\BadParameters;
 use \eZ\Publish\API\Repository\Repository;
 
 /**
- * A wrapper entity is an object with a location and its content, available via lazy loading.
+ * A wrapper entity is an object with a Location and its Content, available via lazy loading.
  */
 class eZObjectWrapper implements eZObjectWrapperInterface
 {
