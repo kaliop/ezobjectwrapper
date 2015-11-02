@@ -1,0 +1,33 @@
+# Sample configuration for this bundle.
+# NB: this file is NOT active as is, it is just here as example documentation.
+
+ezobject_wrapper:
+
+    # The default wrapper class to be used for all content types which have no explicit mapping
+    # When unset, \Kaliop\eZObjectWrapperBundle\Repository\Base is used
+    default_repository_class: \Acme\AcmeBundle\Repository\Default
+
+    # A list of class names used to implement wrappers for specific content types.
+    class_map:
+        article: \Acme\AcmeBundle\Repository\Article
+
+# For more complex cases: tag services to be used as Repositories
+# (this allows to have a different constructor / inject more stuff into the wrapper objects)
+# The easiest way to create them is to subclass eZObjectWrapperService, and declare the services as children of ezobject_wrapper.wrapper.abstract
+services:
+
+    ezobject_wrapper.repository.newsletter:
+        class: Acme\AcmeBundle\Repository\Newsletter
+        parent: ezobject_wrapper.repository.abstract
+        arguments:
+            - @ezpublish.api.repository
+        calls:
+            # Injecting some settings to our custom repository class. E.g. the root path where to fetch entities from
+            - [ setSettings, [ { newsletter_location_path: %newsletter_location_path% } ] ]
+        tags:
+            # Tagging the service will make it register with the Entity Manager for the given contentType
+            -  { name: ezobject_wrapper.repository, content_type: newsletter }
+
+parameters:
+    # Using a parameter allows to easily have different values for different environments for things like node Ids
+    newsletter_location_path: /1/2/211/

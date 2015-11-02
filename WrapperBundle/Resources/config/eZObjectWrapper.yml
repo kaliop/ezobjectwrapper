@@ -1,4 +1,0 @@
-parameters:
-    default_ezobject_class: Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapper
-#    class_mapping:
-#            article: \Acme\AcmeBundle\eZObjectWrapper\Article

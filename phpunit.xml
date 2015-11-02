@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./WrapperBundle/Tests/bootstrap.php">
+
+    <php>
+        <server name="KERNEL_DIR" value="vendor/ezsystems/ezpublish-community/ezpublish" />
+        <server name="SYMFONY_ENV" value="behat" />
+    </php>
+
+    <!-- code coverage reporting -->
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./WrapperBundle/</directory>
+            <exclude>
+                <directory>./WrapperBundle/Resources</directory>
+                <directory>./WrapperBundle/Tests</directory>
+                <directory>./WrapperBundle/vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
