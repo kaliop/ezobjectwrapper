@@ -1,0 +1,73 @@
+language: php
+
+sudo: required
+
+matrix:
+  include:
+    #- php: 5.4
+    #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2' EZ_VERSION=Community
+    - php: 5.5
+      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=Community
+    #- php:5.6
+    #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11 ezsystems/behatbundle:~6.0' EZ_VERSION=Platform
+    #- php:7.0
+    #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11' EZ_VERSION=Platform
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -q -y --force-yes apache2 libapache2-mod-fastcgi
+  - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS behattestdb; GRANT ALL ON behattestdb.* TO ezp@localhost IDENTIFIED BY 'ezp';"
+
+install:
+  # Latest version of composer breaks downloading eZ, so we can not run self-update. See https://github.com/composer/composer/issues/4582
+  #- composer self-update
+
+  # Increase php memory limit (need to do this now or we risk composer failing)
+  - phpenv config-add WrapperBundle/Tests/travis/zzz_php.ini
+
+  # Q: are all of these scripts ok here, or shall they be moved to the before_script step, when we add matrix combinations ???
+
+  # Disable xdebug for speed.
+  # NB: this should NOT be done for hhvm and php 7.0.
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" -a "$TRAVIS_PHP_VERSION" != "7.0" -a "$TRAVIS_PHP_VERSION" != "5.6" ]; then phpenv config-rm xdebug.ini; fi
+
+  # We do not rely on the requirements set in composer.json, but install a different eZ version depending on the test matrix
+  - composer require --prefer-source --dev ${EZ_PACKAGES}
+  # Q: is this needed at all ???
+  - composer update
+
+before_script:
+  - cp vendor/ezsystems/ezpublish-community/ezpublish/config/parameters.yml.dist vendor/ezsystems/ezpublish-community/ezpublish/config/parameters.yml
+  - cat WrapperBundle/Tests/ezpublish/config/config_behat.yml >> vendor/ezsystems/ezpublish-community/ezpublish/config/config_behat.yml
+  - sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\KaliopeZObjectWrapperBundle(),/' vendor/ezsystems/ezpublish-community/ezpublish/EzPublishKernel.php
+
+  # todo: we have to fix the autoloader for these to work...
+  #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump
+  #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat cache:clear --no-debug
+
+  # Create the database from sql files present in legacy stack
+  - if [ "$EZ_VERSION" = "Community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/mysql/kernel_schema.sql; fi
+  - if [ "$EZ_VERSION" = "Community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/common/cleandata.sql; fi
+
+script:
+  # Finally! :-D
+  - phpunit --colors WrapperBundle/Tests/phpunit
+
+after_failure:
+  # Display as much info as we can to help developers
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php -i; fi
+
+after_script:
+  # Upload code-coverage to Scrutinizer
+  #- if [ "$TRAVIS_PHP_VERSION" = "5.6" -a -f coverage.clover ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  #- if [ "$TRAVIS_PHP_VERSION" = "5.6" -a -f coverage.clover ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  # Upload code-coverage to CodeClimate
+  #- if [ "$TRAVIS_PHP_VERSION" = "5.6" -a -f coverage.clover ]; then CODECLIMATE_REPO_TOKEN=TOBEGOTTEN ./vendor/bin/test-reporter --coverage-report=coverage.clover; fi
+
+# reduce depth (history) of git checkout
+git:
+    depth: 30
+
+cache:
+    directories:
+        - $COMPOSER_CACHE_DIR
