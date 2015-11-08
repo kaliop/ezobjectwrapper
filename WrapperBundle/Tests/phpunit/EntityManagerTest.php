@@ -4,6 +4,9 @@ include_once(__DIR__.'/BaseTest.php');
 include_once(__DIR__ . '/../TestEntity.php');
 include_once(__DIR__ . '/../TestRepository.php');
 
+use eZ\Publish\API\Repository\Values\Content\Query;
+use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
+
 class EntityManagerTest extends BaseTest
 {
     public function testLoad()
@@ -28,6 +31,17 @@ class EntityManagerTest extends BaseTest
                 $this->rootEntity->content(), $this->rootEntity->location(), $this->rootEntity->content()->contentInfo
         ));
         $this->assertCount(3, $e2);
+
+        $query = new Query();
+        $query->filter = new Criterion\LogicalAnd(array(
+            //new Criterion\ContentTypeIdentifier($this->contentTypeIdentifier),
+            new Criterion\Subtree('/1/2/')
+        ));
+        //$query->performCount = false;
+        $query->limit = 2;
+        $query->offset = 0;
+        $e2 = $entityManager->loadMany($this->container->get('ezpublish.api.repository')->getSearchService()->findContent($query));
+        $this->assertGreaterThanOrEqual(1, count($e2));
     }
 
     public function testGetRepository()

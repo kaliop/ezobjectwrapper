@@ -25,7 +25,7 @@ Content, a different Repository service is used.
 *Repository* services are used to hold the logic to fetch Entities. A typical Repository method would be f.e.
 `getLastTenModified()`.
 
-*Entity* instances provide a lazy-loading method to fetch Contents and Locations. They are supposed to hold the logic to
+*Entity* instances provide a lazy-loading wrapper for Contents and Locations. They are supposed to hold the logic to
 decode data from the Content Fields, and to fetch related Entities (without overloading the view Controller and creating
 a new kernel request). They are generally not configured as Symfony services.
 

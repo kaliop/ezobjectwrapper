@@ -1,3 +1,5 @@
+# A Travis configuration file for a bundle which aims to be compatible with both eZPublish 5 and eZPlatform
+
 language: php
 
 sudo: required
@@ -5,13 +7,13 @@ sudo: required
 matrix:
   include:
     #- php: 5.4
-    #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2' EZ_VERSION=Community
+    #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2?' EZ_VERSION=ezpublish-community
     - php: 5.5
-      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=Community
-    #- php:5.6
-    #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11 ezsystems/behatbundle:~6.0' EZ_VERSION=Platform
+      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community
+    - php:5.6
+      env: EZ_PACKAGES='ezsystems/ezplatform:~v1.0.0-beta7 ezsystems/behatbundle:~6.0' EZ_VERSION=ezplatform
     #- php:7.0
-    #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11' EZ_VERSION=Platform
+    #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11?' EZ_VERSION=ezplatform
 
 before_install:
   - sudo apt-get update
@@ -27,31 +29,40 @@ install:
 
   # Q: are all of these scripts ok here, or shall they be moved to the before_script step, when we add matrix combinations ???
 
-  # Disable xdebug for speed.
+  # Disable xdebug for speed, unless we need it for code coverage generation.
   # NB: this should NOT be done for hhvm and php 7.0.
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" -a "$TRAVIS_PHP_VERSION" != "7.0" -a "$TRAVIS_PHP_VERSION" != "5.6" ]; then phpenv config-rm xdebug.ini; fi
 
   # We do not rely on the requirements set in composer.json, but install a different eZ version depending on the test matrix
+  # For the moment, to install eZPlatform, a set of DEV packages have to be allowed; really ugly sed expression to alter composer.json follows
+  - if [ "$EZ_VERSION" = "ezplatform" ]; then sed -i 's/"license": "GPL-2.0",/"license": "GPL-2.0", "minimum-stability": "dev", "prefer-stable": true,/' composer.json; fi
   - composer require --prefer-source --dev ${EZ_PACKAGES}
   # Q: is this needed at all ???
   - composer update
 
 before_script:
-  - cp vendor/ezsystems/ezpublish-community/ezpublish/config/parameters.yml.dist vendor/ezsystems/ezpublish-community/ezpublish/config/parameters.yml
-  - cat WrapperBundle/Tests/ezpublish/config/config_behat.yml >> vendor/ezsystems/ezpublish-community/ezpublish/config/config_behat.yml
-  - sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\KaliopeZObjectWrapperBundle(),/' vendor/ezsystems/ezpublish-community/ezpublish/EzPublishKernel.php
+  # Set up configuration files
+  - cp vendor/ezsystems/${EZ_VERSION}/ezpublish/config/parameters.yml.dist vendor/ezsystems/${EZ_VERSION}/ezpublish/config/parameters.yml
+  - cat WrapperBundle/Tests/ezpublish/config/config_behat_${EZ_VERSION}.yml >> vendor/ezsystems/${EZ_VERSION}/ezpublish/config/config_behat.yml
+  - sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\KaliopeZObjectWrapperBundle(),/' vendor/ezsystems/${EZ_VERSION}/ezpublish/EzPublishKernel.php
+  - if [ "$EZ_VERSION" = "ezplatform" ]; then sed -i 's/"vendor\/ezsystems\/ezpublish-community\/ezpublish"/"vendor\/ezsystems\/ezplatform\/ezpublish"/' phpunit.xml; fi
 
-  # todo: we have to fix the autoloader for these to work...
+  # TODO we have to fix the autoloader for these to work... but are they needed at all?
   #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump
   #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat cache:clear --no-debug
 
-  # Create the database from sql files present in legacy stack
-  - if [ "$EZ_VERSION" = "Community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/mysql/kernel_schema.sql; fi
-  - if [ "$EZ_VERSION" = "Community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/common/cleandata.sql; fi
+  # Create the database from sql files present in either the legacy stack or kernel
+  - if [ "$EZ_VERSION" = "ezpublish-community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/mysql/kernel_schema.sql; fi
+  - if [ "$EZ_VERSION" = "ezpublish-community" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-legacy/kernel/sql/common/cleandata.sql; fi
+  - if [ "$EZ_VERSION" = "ezplatform" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-kernel/data/mysql/schema.sql; fi
+  - if [ "$EZ_VERSION" = "ezplatform" ]; then mysql -uroot behattestdb < vendor/ezsystems/ezpublish-kernel/data/cleandata.sql; fi
+
+  # TODO For eZPlatform, do we need to set up SOLR as well ?
+  #- if [ "$EZ_VERSION" = "ezplatform" ]; then ./vendor/ezsystems/ezplatform-solr-search-engine:bin/.travis/init_solr.sh; fi
 
 script:
   # Finally! :-D
-  - phpunit --colors WrapperBundle/Tests/phpunit
+  - phpunit --colors --coverage-clover=coverage.clover WrapperBundle/Tests/phpunit
 
 after_failure:
   # Display as much info as we can to help developers
