@@ -16,8 +16,9 @@ matrix:
     #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11?' EZ_VERSION=ezplatform
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -q -y --force-yes apache2 libapache2-mod-fastcgi
+  # No need for a web server, until we start testing using Behat
+  #- sudo apt-get update
+  #- sudo apt-get install -q -y --force-yes apache2 libapache2-mod-fastcgi
   - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS behattestdb; GRANT ALL ON behattestdb.* TO ezp@localhost IDENTIFIED BY 'ezp';"
 
 install:
