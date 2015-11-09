@@ -11,7 +11,7 @@ matrix:
     - php: 5.5
       env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community
     - php: 5.6
-      env: EZ_PACKAGES='ezsystems/ezplatform:~v1.0.0-beta7 ezsystems/behatbundle:~6.0' EZ_VERSION=ezplatform
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.0.0-beta7 ezsystems/behatbundle:~6.0' EZ_VERSION=ezplatform
     #- php:7.0
     #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11?' EZ_VERSION=ezplatform
 
