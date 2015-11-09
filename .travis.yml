@@ -10,7 +10,7 @@ matrix:
     #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2?' EZ_VERSION=ezpublish-community
     - php: 5.5
       env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community
-    - php:5.6
+    - php: 5.6
       env: EZ_PACKAGES='ezsystems/ezplatform:~v1.0.0-beta7 ezsystems/behatbundle:~6.0' EZ_VERSION=ezplatform
     #- php:7.0
     #  env: EZ_PACKAGES='ezsystems/ezplatform:~0.11?' EZ_VERSION=ezplatform
@@ -36,7 +36,7 @@ install:
 
   # We do not rely on the requirements set in composer.json, but install a different eZ version depending on the test matrix
   # For the moment, to install eZPlatform, a set of DEV packages have to be allowed; really ugly sed expression to alter composer.json follows
-  - if [ "$EZ_VERSION" = "ezplatform" ]; then sed -i 's/"license": "GPL-2.0",/"license": "GPL-2.0", "minimum-stability": "dev", "prefer-stable": true,/' composer.json; fi
+  - 'if [ "$EZ_VERSION" = "ezplatform" ]; then sed -i ''s/"license": "GPL-2.0",/"license": "GPL-2.0", "minimum-stability": "dev", "prefer-stable": true,/'' composer.json; fi'
   - composer require --prefer-source --dev ${EZ_PACKAGES}
   # Q: is this needed at all ???
   - composer update

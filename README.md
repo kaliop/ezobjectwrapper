@@ -396,4 +396,4 @@ E-mail : asavoie@kaliop.com / sbressey@kaliop.com
 [![Latest Stable Version](https://poser.pugx.org/kaliop/ezobjectwrapperbundle/v/stable)](https://packagist.org/packages/kaliop/ezobjectwrapperbundle)
 [![Total Downloads](https://poser.pugx.org/kaliop/ezobjectwrapperbundle/downloads)](https://packagist.org/packages/kaliop/ezobjectwrapperbundle)
 
-[![Build Status](https://travis-ci.org/kaliop-uk/ezobjectwrapperbundle.svg?branch=master)](https://travis-ci.org/kaliop-uk/ezobjectwrapperbundle)
+[![Build Status](https://travis-ci.org/kaliop/ezobjectwrapper.svg?branch=master)](https://travis-ci.org/kaliop/ezobjectwrapper)
