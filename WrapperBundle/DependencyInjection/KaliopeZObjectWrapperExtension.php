@@ -41,7 +41,7 @@ class KaliopeZObjectWrapperExtension extends Extension
         if (!isset($config['class_map'])) {
             throw new InvalidConfigurationException("Missing 'class_map' configuration for 'ezobject_wrapper'");
         }
-        $factoryDefinition = null;
+
         if ($container->hasDefinition($this->entityManagerService)) {
             $factoryDefinition = $container->findDefinition($this->entityManagerService);
 

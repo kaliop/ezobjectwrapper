@@ -237,7 +237,7 @@ class Repository implements RepositoryInterface
         $entities = array();
         foreach($searchResult->searchHits as $searchHit) {
             // let's hope that in the future eZPublish does not add new types of results to SearchResult... :-P
-            if ($searchHit->valueObject instanceof eZ\Publish\API\Repository\Values\Content\Location) {
+            if ($searchHit->valueObject instanceof \eZ\Publish\API\Repository\Values\Content\Location) {
                 $entities[] = $this->loadEntityFromLocation($searchHit->valueObject);
             } else {
                 $entities[] = $this->loadEntityFromContent($searchHit->valueObject);
