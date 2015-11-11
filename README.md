@@ -208,6 +208,7 @@ services:
         parent: ezobject_wrapper.repository.abstract
         arguments:
             - @ezpublish.api.repository
+            - @ezobject_wrapper.entity_manager
         calls:
             # Injecting some settings to our custom repository class. E.g. the root path of newsletter contents
             - [ setSettings, [ { newsletter_location_path: %newsletter_location_path% } ] ]
@@ -397,3 +398,5 @@ E-mail : asavoie@kaliop.com / sbressey@kaliop.com
 [![Total Downloads](https://poser.pugx.org/kaliop/ezobjectwrapperbundle/downloads)](https://packagist.org/packages/kaliop/ezobjectwrapperbundle)
 
 [![Build Status](https://travis-ci.org/kaliop/ezobjectwrapper.svg?branch=master)](https://travis-ci.org/kaliop/ezobjectwrapper)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kaliop/ezobjectwrapper/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kaliop/ezobjectwrapper/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/kaliop/ezobjectwrapper/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kaliop/ezobjectwrapper/?branch=master)
