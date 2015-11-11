@@ -52,6 +52,9 @@ class EntityManagerTest extends BaseTest
         $entityManager = $this->container->get('ezobject_wrapper.entity_manager');
         $repo = $entityManager->getRepository($contentTypeIdentifier);
         $this->assertEquals('Kaliop\eZObjectWrapperBundle\Repository\Base', get_class($repo));
+
+        $repo = $entityManager->getRepositoryByContentTypeId($this->rootEntity->content()->contentInfo->contentTypeId);
+        $this->assertEquals('Kaliop\eZObjectWrapperBundle\Repository\Base', get_class($repo));
     }
 
     public function testRegisterClass()
@@ -63,6 +66,9 @@ class EntityManagerTest extends BaseTest
         $entityManager->registerClass('Test\TestRepository', $contentTypeIdentifier);
 
         $repo = $entityManager->getRepository($contentTypeIdentifier);
+        $this->assertEquals('Test\TestRepository', get_class($repo));
+
+        $repo = $entityManager->getRepositoryByContentTypeId($this->rootEntity->content()->contentInfo->contentTypeId);
         $this->assertEquals('Test\TestRepository', get_class($repo));
 
         $e2 = $entityManager->find($contentTypeIdentifier, $this->rootEntity->content()->id);
