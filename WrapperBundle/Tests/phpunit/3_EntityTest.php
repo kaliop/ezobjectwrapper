@@ -15,6 +15,6 @@ class EntityTest extends BaseTest
         $e2 = $entityManager->find($contentTypeIdentifier, $this->rootEntity->content()->id);
 
         $repo = $e2->getRepository();
-        $this->assertEquals('Kaliop\eZObjectWrapperBundle\Repository\Base', get_class($repo));
+        $this->assertEquals('Test\TestRepository', get_class($repo));
     }
 }
