@@ -112,7 +112,7 @@ class EntityManager
      */
     public function getRepositoryByContentTypeId($contentTypeId)
     {
-        return getRepository($this->getContentTypeIdentifierFromId($contentTypeId));
+        return $this->getRepository($this->getContentTypeIdentifierFromId($contentTypeId));
     }
 
     /**
