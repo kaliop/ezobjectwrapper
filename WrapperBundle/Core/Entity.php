@@ -6,21 +6,23 @@ use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Repository as eZRepository;
 use Kaliop\eZObjectWrapperBundle\Core\Traits\LoggingEntity;
+use Kaliop\eZObjectWrapperBundle\Core\Traits\EntityManagerAwareEntity;
 
 class Entity implements EntityInterface
 {
     use LoggingEntity;
+    use EntityManagerAwareEntity;
 
     /**
-     * @var \eZ\Publish\API\Repository\Repository
+     * @var \eZ\Publish\API\Repository\Repository $repository
      */
     protected $repository;
     /**
-     * @var \eZ\Publish\API\Repository\Values\Content\Location
+     * @var \eZ\Publish\API\Repository\Values\Content\Location $location
      */
     protected $location;
     /**
-     * @var \eZ\Publish\API\Repository\Values\Content\Content
+     * @var \eZ\Publish\API\Repository\Values\Content\Content $content
      */
     protected $content;
 

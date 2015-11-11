@@ -15,6 +15,9 @@ use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
  */
 class EntityManager
 {
+    /**
+     * @var \eZ\Publish\API\Repository\Repository $repository
+     */
     protected $repository;
     protected $classMap;
     protected $serviceMap;
@@ -75,31 +78,41 @@ class EntityManager
     }
 
     /**
-     * @param string $contentType as used in the mapping
+     * @param string $contentTypeIdentifier as used in the mapping
      * @return \Kaliop\eZObjectWrapperBundle\Core\RepositoryInterface
      * @throws \UnexpectedValueException
      */
-    public function getRepository($contentType)
+    public function getRepository($contentTypeIdentifier)
     {
-        if (isset($this->serviceMap[$contentType])) {
-            $repo = $this->serviceMap[$contentType];
-            return $repo->setContentTypeIdentifier($contentType);
+        if (isset($this->serviceMap[$contentTypeIdentifier])) {
+            $repo = $this->serviceMap[$contentTypeIdentifier];
+            return $repo->setContentTypeIdentifier($contentTypeIdentifier);
         }
 
         /// @todo for a small perf gain, we might store the created repo classes in an array
-        if (isset($this->classMap[$contentType])) {
-            $repoClass = $this->classMap[$contentType];
-            $repo = new $repoClass($this->repository);
-            return $repo->setContentTypeIdentifier($contentType);
+        if (isset($this->classMap[$contentTypeIdentifier])) {
+            $repoClass = $this->classMap[$contentTypeIdentifier];
+            $repo = new $repoClass($this->repository, $this);
+            return $repo->setContentTypeIdentifier($contentTypeIdentifier);
         }
 
         if ($this->defaultClass != '') {
             $repoClass = $this->defaultClass;
-            $repo = new $repoClass($this->repository);
-            return $repo->setContentTypeIdentifier($contentType);
+            $repo = new $repoClass($this->repository, $this);
+            return $repo->setContentTypeIdentifier($contentTypeIdentifier);
         }
 
-        throw new \UnexpectedValueException("Content type '$contentType' is not registered with the Entity Manager, can not retrieve a Repository for it");
+        throw new \UnexpectedValueException("Content type '$contentTypeIdentifier' is not registered with the Entity Manager, can not retrieve a Repository for it");
+    }
+
+    /**
+     * @param int $contentTypeId slightly slower than loading by Identifier, but is useful when used eg. by Entities
+     * @return \Kaliop\eZObjectWrapperBundle\Core\RepositoryInterface
+     * @throws \UnexpectedValueException
+     */
+    public function getRepositoryByContentTypeId($contentTypeId)
+    {
+        return getRepository($this->getContentTypeIdentifierFromId($contentTypeId));
     }
 
     /**
@@ -130,15 +143,15 @@ class EntityManager
         {
             case $content instanceof ContentInfo:
                 return $this
-                    ->getRepository($this->getContentTypeIdentifierFromId($content->contentTypeId))
+                    ->getRepositoryByContentTypeId($content->contentTypeId)
                     ->loadEntityFromContentInfo($content);
             case $content instanceof Content:
                 return $this
-                    ->getRepository($this->getContentTypeIdentifierFromId($content->contentInfo->contentTypeId))
+                    ->getRepositoryByContentTypeId($content->contentInfo->contentTypeId)
                     ->loadEntityFromContent($content);
             case $content instanceof Location:
                 return $this
-                    ->getRepository($this->getContentTypeIdentifierFromId($content->contentInfo->contentTypeId))
+                    ->getRepositoryByContentTypeId($content->contentInfo->contentTypeId)
                     ->loadEntityFromLocation($content);
         }
         throw new \UnexpectedValueException("Can not load an Entity for php object of class " . get_class($content));

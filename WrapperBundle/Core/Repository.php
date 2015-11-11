@@ -53,13 +53,15 @@ class Repository implements RepositoryInterface
     protected $entityClass;
 
     protected $repository;
+    protected $entityManager;
     protected $contentTypeIdentifier;
     protected $settings;
     protected $logger;
 
-    public function __construct(eZRepository $repository, array $settings=array(), $contentTypeIdentifier='')
+    public function __construct(eZRepository $repository, $entityManager, array $settings=array(), $contentTypeIdentifier='')
     {
         $this->repository = $repository;
+        $this->entityManager = $entityManager;
         $this->settings = $this->validateSettings($settings);
         $this->contentTypeIdentifier = $contentTypeIdentifier;
     }
@@ -73,6 +75,7 @@ class Repository implements RepositoryInterface
     public function setSettings(array $settings)
     {
         $this->settings = $this->validateSettings($settings);
+        return $this;
     }
 
     public function setLogger(LoggerInterface $logger=null)
@@ -101,6 +104,8 @@ class Repository implements RepositoryInterface
      * @param string $method
      * @param array $args
      * @return mixed
+     *
+     * @todo !important move this method to protected access?
      */
     public function __call($method, $args)
     {
@@ -126,6 +131,7 @@ class Repository implements RepositoryInterface
 
     /**
      * To be overridden in subclasses, this method allows injecting extra services/settings in the entities created.
+     * This version 'knows' about EntityManagerAware and Logging entity traits.
      *
      * @param \Kaliop\eZObjectWrapperBundle\Core\EntityInterface $entity
      * @return \Kaliop\eZObjectWrapperBundle\Core\EntityInterface
@@ -134,6 +140,9 @@ class Repository implements RepositoryInterface
     {
         if (is_callable(array($entity, 'setLogger'))) {
             $entity->setLogger($this->logger);
+        }
+        if (is_callable(array($entity, 'setEntityManager'))) {
+            $entity->setEntityManager($this->entityManager);
         }
         return $entity;
     }
