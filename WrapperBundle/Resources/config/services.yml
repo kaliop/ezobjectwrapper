@@ -1,5 +1,5 @@
 parameters:
-    ezobject_wrapper.ezobject_wrapper_factory.class: Kaliop\Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperFactory
+    ezobject_wrapper.ezobject_wrapper_factory.class: Kaliop\eZObjectWrapperBundle\Core\eZObjectWrapperFactory
 
 services:
     ezobject_wrapper.services.factory:
