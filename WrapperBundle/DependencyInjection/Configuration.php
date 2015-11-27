@@ -22,8 +22,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('default_repository_class')->defaultValue('\Kaliop\eZObjectWrapperBundle\Repository\Base')->end()
-            ->arrayNode('class_map')->isRequired()->prototype('scalar')->end()->end()
+                ->scalarNode('default_repository_class')
+                    ->defaultValue('\Kaliop\eZObjectWrapperBundle\Repository\Base')
+                    ->info('The default wrapper class to be used for all content types which have no explicit mapping')
+                ->end()
+                ->arrayNode('class_map')
+                    ->defaultValue(array())
+                    ->info('A list of class names used to implement wrappers for specific content types. Array key is the content type identifier')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

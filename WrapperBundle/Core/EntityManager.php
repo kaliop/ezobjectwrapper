@@ -55,6 +55,8 @@ class EntityManager
      * @var string $className
      * @var string $contentTypeIdentifier
      * @throws \InvalidArgumentException
+     *
+     * @todo validate contentTypeIdentifier as well. Reject null identifier and integers (unless 0 isa valid content type identifier...)
      */
     public function registerClass($className, $contentTypeIdentifier)
     {
