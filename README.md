@@ -123,6 +123,8 @@ Let's imagine you want to handle the 'newsletter' content type.
             newsletter: \Acme\AcmeBundle\Repository\Newsletter
     ```
 
+    (Note that this is "plain" configuration, it does not have to be in `parameters`)
+
 4. Test that it works
 
     ```php
