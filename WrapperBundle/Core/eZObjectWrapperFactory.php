@@ -6,6 +6,8 @@ use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Foncia\eZObjectWrapper\HelpBlock;
+use eZ\Publish\Core\Base\Exceptions\NotFoundException;
+
 
 /**
  * Factory which provide eZObjectWrapper objects or eZObjectWrapper children objects, according to parameters sets in eZObjectWrapper.yaml
@@ -44,9 +46,13 @@ class eZObjectWrapperFactory
         $locationSource = null;
         $contentSource = null;
 
-        if(is_numeric($source)) {
-            $locationSource = $source = $this->repository->getLocationService()->loadLocation($source);
-        } elseif($source instanceof Content) {
+        if (is_numeric($source)) {
+            try {
+                $locationSource = $source = $this->repository->getLocationService()->loadLocation($source);
+            } catch (NotFoundException $e) {
+                return false;
+            }
+        } elseif ($source instanceof Content) {
             $contentSource = $source;
         } else {
             $locationSource = $source;
