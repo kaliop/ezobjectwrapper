@@ -83,7 +83,12 @@ class eZObjectWrapperFactory
         $objectWrapperList = array();
 
         foreach ($contentIds as $contentId) {
-            $content = $this->repository->getContentService()->loadContent($contentId);
+            try {
+                $content = $this->repository->getContentService()->loadContent($contentId);
+            } catch (NotFoundException $e) {
+                return false;
+            }
+
             $contentInfo = $content->contentInfo;
             if ($contentInfo->mainLocationId !== null) {
                 $location = $this->repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
