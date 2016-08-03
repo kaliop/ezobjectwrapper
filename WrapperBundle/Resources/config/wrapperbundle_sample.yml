@@ -20,11 +20,11 @@ services:
         class: Acme\AcmeBundle\Repository\Newsletter
         parent: ezobject_wrapper.repository.abstract
         arguments:
-            - @ezpublish.api.repository
-            - @ezobject_wrapper.entity_manager
+            - '@ezpublish.api.repository'
+            - '@ezobject_wrapper.entity_manager'
         calls:
             # Injecting some settings to our custom repository class. E.g. the root path where to fetch entities from
-            - [ setSettings, [ { newsletter_location_path: %newsletter_location_path% } ] ]
+            - [ setSettings, [ { newsletter_location_path: '%newsletter_location_path%' } ] ]
         tags:
             # Tagging the service will make it register with the Entity Manager for the given contentType
             -  { name: ezobject_wrapper.repository, content_type: newsletter }

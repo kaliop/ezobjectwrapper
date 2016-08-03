@@ -5,22 +5,22 @@ parameters:
 services:
 
     ezobject_wrapper.entity_manager:
-        class: %ezobject_wrapper.entity_manager.class%
+        class: '%ezobject_wrapper.entity_manager.class%'
         arguments:
-          - @ezpublish.api.repository
+          - '@ezpublish.api.repository'
           # map of fieldtypes => classes implementing RepositoryInterface. The repos will be created on the fly by the EM.
           # Using this type of declaration makes it easy to add repos without having to declare services.
           - []
 
     # base service for all Repository services, allows to inject the logger
     ezobject_wrapper.repository.abstract:
-        class: %ezobject_wrapper.repository.abstract.class%
+        class: '%ezobject_wrapper.repository.abstract.class%'
         calls:
-            - [ setLogger, [ @?logger ] ]
+            - [ setLogger, [ '@?logger' ] ]
         abstract: true
 
     twig.extension.ezobject_wrapper:
         class: Kaliop\eZObjectWrapperBundle\Twig\eZObjectWrapperExtension
-        arguments: [@service_container]
+        arguments: ['@service_container']
         tags:
             - { name: twig.extension }
