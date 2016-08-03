@@ -5,6 +5,9 @@
     <php>
         <server name="KERNEL_DIR" value="vendor/ezsystems/ezpublish-community/ezpublish" />
         <server name="SYMFONY_ENV" value="behat" />
+
+        <!-- we allow 100 deprecation warnings to go through -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="100" />
     </php>
 
     <!-- code coverage reporting -->
