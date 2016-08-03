@@ -7,7 +7,7 @@ sudo: required
 matrix:
   include:
     #- php: 5.4
-    #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2?' EZ_VERSION=ezpublish-community
+    #  env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.3.2?' EZ_VERSION=ezpublish-community EZ_APP_DIR=ezpublish EZ_KERNEL=EzPublishKernel
     - php: 5.5
       env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.0 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community EZ_APP_DIR=ezpublish EZ_KERNEL=EzPublishKernel
     - php: 5.6
