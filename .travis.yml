@@ -7,6 +7,8 @@ sudo: false
 
 # NB: see https://support.ez.no/Public/Service-Life for EOL dates of eZPublish versions
 #     and http://php.net/supported-versions.php for EOL dates of PHP versions
+#     but don't foget that php 5.3 is still supported by RedHat: https://access.redhat.com/support/policy/updates/errata.
+# We limit the matrix to one version of eZPublish for each version of PHP
 matrix:
   include:
     # ezpublish-community 2014.3 corresponds to enterprise 5.3, still supported, installs via composer
@@ -26,6 +28,10 @@ matrix:
     #  env: EZ_PACKAGES='ezsystems/ezplatform:~1.4.0 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel
     - php: 7.0
       env: EZ_PACKAGES='ezsystems/ezplatform:~1.4.0 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel
+
+  allow_failures:
+    # this currently fails because of eZPublish services.yml not quoting usage of @, despite it being tested with Sf 2.8...
+    - php: 7.0
 
 before_install:
   # No need for a web server, until we start testing using Selenium
@@ -102,7 +108,6 @@ after_script:
 git:
     depth: 30
 
-# does this interfere with the testing matrix?
-#cache:
-#    directories:
-#        - $COMPOSER_CACHE_DIR
+cache:
+    directories:
+        - $COMPOSER_CACHE_DIR
