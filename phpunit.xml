@@ -7,7 +7,7 @@
         <server name="SYMFONY_ENV" value="behat" />
 
         <!-- we allow some deprecation warnings to go through -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="250" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="1000" />
     </php>
 
     <!-- code coverage reporting -->
