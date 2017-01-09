@@ -172,13 +172,13 @@ class EntityManager
         {
             case $contents instanceof SearchResult:
                 $entities = array();
-                foreach($contents->searchHits as $searchHit) {
+                foreach ($contents->searchHits as $searchHit) {
                     $entities[] = $this->load($searchHit->valueObject);
                 }
                 return $entities;
             case is_array($contents):
                 $entities = array();
-                foreach($contents as $key => $value) {
+                foreach ($contents as $key => $value) {
                     $entities[$key] = $this->load($value);
                 }
                 return $entities;

@@ -1,3 +1,13 @@
+Ver 3.1
+
+* added a new Trait to allow to easily get related Entities of an existing entity
+
+
+Ver 3.0.1
+
+* fixed a bug in the RichTextConverterInjectingRepository trait
+
+
 Ver 3.0
 
 * changed: completely new API. No more Factory and Wrapper, we have EntityManager, Entity and Repository

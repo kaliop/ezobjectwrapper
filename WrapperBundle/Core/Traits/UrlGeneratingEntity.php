@@ -5,7 +5,7 @@ namespace Kaliop\eZObjectWrapperBundle\Core\Traits;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Adds the capability  to generate links
+ * Adds the capability to generate links
  */
 trait UrlGeneratingEntity
 {
