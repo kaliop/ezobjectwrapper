@@ -10,7 +10,7 @@ trait RichTextConverterInjectingRepository
 
     public function setRichTextConverter(Converter $richTextConverter)
     {
-        $this->$richTextConverter = $richTextConverter;
+        $this->richTextConverter = $richTextConverter;
         return $this; // fluent interfaces for setters
     }
 

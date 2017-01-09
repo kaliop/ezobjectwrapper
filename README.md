@@ -56,7 +56,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 * Add eZObjectWrapperBundle to EzPublishKernel.php:
 
 ```php
-new \Kaliop\eZObjectWrapperBundle\eZObjectWrapperBundle(),
+new \Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle(),
 ```
 
 ## Usage
@@ -316,7 +316,7 @@ services:
         arguments:
             - @ezpublish.api.repository
         calls:
-            - [ setRouter, [ { @router } ] ]
+            - [ setRouter, [ '@router' ] ]
         tags:
             -  { name: ezobject_wrapper.repository, content_type: newsletter }
 ```
@@ -332,7 +332,7 @@ use ...;
 
 class Newsletter extends BaseRepository
 {
-    use Kaliop\eZObjectWrapperBundle\Core\Traits\RichTextConverterInjectingRepository;
+    use \Kaliop\eZObjectWrapperBundle\Core\Traits\RichTextConverterInjectingRepository;
 }
 
 namespace Acme\AcmeBundle\Entity;
@@ -340,7 +340,7 @@ use ...;
 
 class Newsletter extends BaseEntity
 {
-    use Kaliop\eZObjectWrapperBundle\Core\Traits\RichTextConvertingEntity;
+    use \Kaliop\eZObjectWrapperBundle\Core\Traits\RichTextConvertingEntity;
 
     /**
      * @return string
@@ -359,7 +359,7 @@ services:
         arguments:
             - @ezpublish.api.repository
         calls:
-            - [ setRichTextConverter, [ { @ezpublish.fieldType.ezxmltext.converter.html5 } ] ]
+            - [ setRichTextConverter, [ '@ezpublish.fieldType.ezxmltext.converter.html5' ] ]
         tags:
             -  { name: ezobject_wrapper.repository, content_type: newsletter }
 ```
