@@ -364,6 +364,19 @@ services:
             -  { name: ezobject_wrapper.repository, content_type: newsletter }
 ```
 
+### Allowing an Entity to fetch related Entities
+
+A common usecase is when, given an instance of an Entity, you want to fetch its related object(s) as Entities too.
+A Trait is available for this case as well:
+
+    Kaliop\eZObjectWrapperBundle\Core\Traits\RelationTraversingEntity
+
+Just add it to your Entity class and you will be able to use 2 new methods to retrieve the contents of its object relation(s)
+fields:
+
+    $relatedEntity = $entity->getRelation('fieldName');
+    $relatedEntitiesArray = $entity->getRelations('anotherFieldName');
+
 
 ## Impact with the caches (a.k.a. don't shoot yourself in the foot)
 
