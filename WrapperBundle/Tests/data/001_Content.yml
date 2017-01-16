@@ -1,0 +1,51 @@
+-
+    type: content_type
+    mode: create
+    content_type_group: 1
+    identifier: kwb_test_class
+    name: Kaliop Wrapper Bundle Test Class
+    name_pattern: '<name>'
+    is_container: true
+    always_available: true
+    attributes:
+        -
+            type: ezstring
+            name: name
+            identifier: name
+        -
+            type: ezobjectrelation
+            name: relation
+            identifier: relation
+        -
+            type: ezobjectrelationlist
+            name: relationlist
+            identifier: relationlist
+        -
+            type: ezxmltext
+            name: xmltext
+            identifier: xmltext
+-
+    type: content
+    mode: create
+    content_type: kwb_test_class
+    parent_location: 2
+    attributes:
+        - name: hello world 1
+    references:
+        -
+            identifier: kwb_test_obj_1
+            attribute: object_id
+-
+    type: content
+    mode: create
+    content_type: kwb_test_class
+    parent_location: 2
+    attributes:
+        name: hello world 2
+        relation: reference:kwb_test_obj_1
+        relationlist: [ reference:kwb_test_obj_1 ]
+        xmltext: '<?xml version="1.0" encoding="utf-8"?><section><paragraph><embed view="embed" size="medium" object_id="[reference:kwb_test_obj_1]" /></paragraph></section>'
+    references:
+        -
+            identifier: kwb_test_obj_2
+            attribute: object_id

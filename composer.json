@@ -17,7 +17,9 @@
         "phpunit/phpunit": "4.*",
         "symfony/phpunit-bridge": "*",
         "codeclimate/php-test-reporter": "~0.4",
-        "kaliop/ezmigrationbundle": "~3.1.0"
+        "kaliop/ezmigrationbundle": "~3.1.0",
+        "ezsystems/ezpublish-community": "~2014.11.0",
+        "ezsystems/behatbundle": "~5.4"
     },
     "autoload": {
         "psr-4": {"Kaliop\\eZObjectWrapperBundle\\": "WrapperBundle"}

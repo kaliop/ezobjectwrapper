@@ -27,9 +27,9 @@ matrix:
     #- php: 5.6
     #  env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.0 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
     - php: 7.0
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.0 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.0 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
     - php: 7.1
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.0 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.0 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
 
   #allow_failures:
     # this currently fails because of eZPublish services.yml not quoting usage of @, despite it being tested with Sf 2.8...
@@ -64,12 +64,15 @@ install:
   # Re-enable xdebug for when we need to generate code coverage
   - if [ "$CODE_COVERAGE" = "1" -a "$XDEBUG_INI" != "" ]; then mv "$XDEBUG_INI.bak" "$XDEBUG_INI"; fi
 
+before_script:
   # Create the database from sql files present in either the legacy stack or kernel
   - ./WrapperBundle/Tests/setup/create-db.sh ${EZ_VERSION} behattestdb root
 
-before_script:
   # Set up eZPublish configuration files
   - ./WrapperBundle/Tests/setup/setup-config.sh ${EZ_VERSION} ${EZ_APP_DIR} ${EZ_KERNEL}
+
+  # Set up contents as needed by the test
+  - ./WrapperBundle/Tests/setup/setup-content.sh
 
   # TODO are these needed at all?
   #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump

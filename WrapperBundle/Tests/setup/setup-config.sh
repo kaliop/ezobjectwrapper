@@ -11,6 +11,14 @@ cat WrapperBundle/Tests/config/ezpublish/config_behat_${EZ_VERSION}.yml >> vendo
 
 # Load the wrapper bundle in the Sf kernel
 sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\KaliopeZObjectWrapperBundle(),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
+# And the Migration bundle
+# we load netgen it after the Kernel bundles... hopefully OneupFlysystemBundle will stay there :-)
+sed -i 's/OneupFlysystemBundle(),\?/OneupFlysystemBundle(), new Kaliop\\eZMigrationBundle\\EzMigrationBundle(),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
+# For eZPlatform, load the xmltext bundle as well
+if [ "$EZ_VERSION" = "ezplatform" ]; then
+    # we load it after the Kernel bundles...
+    sed -i 's/AppBundle(),\?/AppBundle(), new EzSystems\\EzPlatformXmlTextFieldTypeBundle\\EzSystemsEzPlatformXmlTextFieldTypeBundle (),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
+fi
 # Fix the eZ5 autoload configuration for the unexpected directory layout
 sed -i "s#'/../vendor/autoload.php'#'/../../../../vendor/autoload.php'#" vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/autoload.php
 
