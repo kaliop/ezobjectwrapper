@@ -56,7 +56,7 @@ install:
   - export XDEBUG_INI=${XDEBUG_INI/,/}
   - if [ "$XDEBUG_INI" != "" ]; then mv "$XDEBUG_INI" "$XDEBUG_INI.bak"; fi
 
-  - ./Tests/setup/setup-composer.sh ${EZ_VERSION}
+  - ./WrapperBundle/Tests/setup/setup-composer.sh ${EZ_VERSION}
   - composer require --prefer-source --dev ${EZ_PACKAGES}
   # Q: is this needed at all ???
   #- composer update
@@ -65,11 +65,11 @@ install:
   - if [ "$CODE_COVERAGE" = "1" -a "$XDEBUG_INI" != "" ]; then mv "$XDEBUG_INI.bak" "$XDEBUG_INI"; fi
 
   # Create the database from sql files present in either the legacy stack or kernel
-  - ./Tests/setup/create-db.sh ${EZ_VERSION} behattestdb root
+  - ./WrapperBundle/Tests/setup/create-db.sh ${EZ_VERSION} behattestdb root
 
 before_script:
   # Set up eZPublish configuration files
-  - ./Tests/setup/setup-config.sh ${EZ_VERSION} ${EZ_APP_DIR} ${EZ_KERNEL}
+  - ./WrapperBundle/Tests/setup/setup-config.sh ${EZ_VERSION} ${EZ_APP_DIR} ${EZ_KERNEL}
 
   # TODO are these needed at all?
   #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump
