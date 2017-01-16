@@ -15,7 +15,7 @@ sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\
 sed -i "s#'/../vendor/autoload.php'#'/../../../../vendor/autoload.php'#" vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/autoload.php
 
 # Generate legacy autoloads
-if [ "$EZ_VERSION" != "ezplatform" ]; then cat Tests/ezpublish-legacy/config.php > vendor/ezsystems/ezpublish-legacy/config.php; fi
+if [ "$EZ_VERSION" != "ezplatform" ]; then cat WrapperBundle/Tests/ezpublish-legacy/config.php > vendor/ezsystems/ezpublish-legacy/config.php; fi
 if [ "$EZ_VERSION" != "ezplatform" ]; then cd vendor/ezsystems/ezpublish-legacy && php bin/php/ezpgenerateautoloads.php && cd ../../..; fi
 
 # Fix the phpunit configuration if needed
