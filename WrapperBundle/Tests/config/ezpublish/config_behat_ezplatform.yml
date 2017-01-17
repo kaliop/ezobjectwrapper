@@ -1,9 +1,8 @@
 
-# This file will be appended to the equivalent on from eZPlatform distribution
+# This file will be appended to the equivalent one from eZPlatform distribution
 
-ezobject_wrapper:
-
-    class_map: []
+parameters:
+    ezpublish.kernel.root_dir: %kernel.root_dir%/../../ezpublish-kernel
 
 doctrine:
     dbal:
@@ -44,3 +43,7 @@ stash:
             drivers: [ FileSystem ]
             inMemory: true
             registerDoctrineAdapter: false
+
+ezobject_wrapper:
+
+    class_map: []

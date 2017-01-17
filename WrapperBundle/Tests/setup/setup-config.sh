@@ -12,8 +12,8 @@ cat WrapperBundle/Tests/config/ezpublish/config_behat_${EZ_VERSION}.yml >> vendo
 # Load the wrapper bundle in the Sf kernel
 sed -i 's/$bundles = array(/$bundles = array(new Kaliop\\eZObjectWrapperBundle\\KaliopeZObjectWrapperBundle(),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
 # And the Migration bundle
-# we load netgen it after the Kernel bundles... hopefully OneupFlysystemBundle will stay there :-)
-sed -i 's/OneupFlysystemBundle(),\?/OneupFlysystemBundle(), new Kaliop\\eZMigrationBundle\\EzMigrationBundle(),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
+# we load it after the Kernel bundles... hopefully NelmioCorsBundle will stay there :-)
+sed -i 's/NelmioCorsBundle(),\?/NelmioCorsBundle(), new Kaliop\\eZMigrationBundle\\EzMigrationBundle(),/' vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/${EZ_KERNEL}.php
 # For eZPlatform, load the xmltext bundle as well
 if [ "$EZ_VERSION" = "ezplatform" ]; then
     # we load it after the Kernel bundles...
