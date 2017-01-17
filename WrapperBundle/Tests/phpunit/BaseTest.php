@@ -1,5 +1,9 @@
 <?php
 
+include_once(__DIR__ . '/../TestEntity.php');
+include_once(__DIR__ . '/../TestRepository.php');
+include_once(__DIR__ . '/../TestTraitsRepository.php');
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class BaseTest extends WebTestCase

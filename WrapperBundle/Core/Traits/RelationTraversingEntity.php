@@ -17,7 +17,7 @@ trait RelationTraversingEntity
      * @param string $fieldName
      * @return EntityInterface[]
      */
-    public function getRelations($fieldName)
+    protected function getRelations($fieldName)
     {
         $relatedEntities = array();
 
@@ -46,7 +46,7 @@ trait RelationTraversingEntity
      * @param string $fieldName
      * @return EntityInterface
      */
-    public function getRelation($fieldName)
+    protected function getRelation($fieldName)
     {
         $fieldValue = $this->content()->getFieldValue($fieldName);
         if (! $fieldValue instanceof Relation\Value) {

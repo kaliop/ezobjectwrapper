@@ -2,6 +2,8 @@ Ver 3.1
 
 * added a new Trait to allow to easily get related Entities of an existing entity
 
+* the RichTextConvertingEntity Trait has gained a new method getHtmlForField to make life easier to implementors
+
 
 Ver 3.0.1
 

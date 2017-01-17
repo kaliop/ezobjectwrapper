@@ -315,6 +315,7 @@ services:
         parent: ezobject_wrapper.repository.abstract
         arguments:
             - @ezpublish.api.repository
+            - @ezobject_wrapper.entity_manager
         calls:
             - [ setRouter, [ '@router' ] ]
         tags:
@@ -358,6 +359,7 @@ services:
         parent: ezobject_wrapper.repository.abstract
         arguments:
             - @ezpublish.api.repository
+            - @ezobject_wrapper.entity_manager
         calls:
             - [ setRichTextConverter, [ '@ezpublish.fieldType.ezxmltext.converter.html5' ] ]
         tags:
@@ -374,8 +376,8 @@ A Trait is available for this case as well:
 Just add it to your Entity class and you will be able to use 2 new methods to retrieve the contents of its object relation(s)
 fields:
 
-    $relatedEntity = $entity->getRelation('fieldName');
-    $relatedEntitiesArray = $entity->getRelations('anotherFieldName');
+    $relatedEntity = $this->getRelation('fieldName');
+    $relatedEntitiesArray = $this->getRelations('anotherFieldName');
 
 
 ## Impact with the caches (a.k.a. don't shoot yourself in the foot)

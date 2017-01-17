@@ -1,8 +1,6 @@
 <?php
 
 include_once(__DIR__.'/BaseTest.php');
-include_once(__DIR__ . '/../TestEntity.php');
-include_once(__DIR__ . '/../TestRepository.php');
 
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;

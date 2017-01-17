@@ -31,11 +31,24 @@ class EntityTest extends BaseTest
     public function testRelationTraversingTrait()
     {
         $e2 = $this->getEntityByRemoteId(self::$entity2RemoteId);
-        $e1 = $e2->getRelation('relation');
+        $e1 = $e2->getRelationFor('relation');
         $this->assertEquals(self::$entity1RemoteId, $e1->content()->contentInfo->remoteId);
-        $e1s = $e2->getRelations('relationlist');
+        $e1s = $e2->getRelationsFor('relationlist');
         $this->assertCount(1, $e1s);
         $e1 = $e1s[0];
         $this->assertEquals(self::$entity1RemoteId, $e1->content()->contentInfo->remoteId);
+    }
+
+    /* The following throws 'LogicException: Rendering a fragment can only be done when handling a Request.' ...
+    public function testRichTextConvertingTrait()
+    {
+        $e2 = $this->getEntityByRemoteId(self::$entity2RemoteId);
+        var_dump($e2->getHtmlFor('xmltext'));
+    }*/
+
+    public function testUrlGeneratingTrait()
+    {
+        $e2 = $this->getEntityByRemoteId(self::$entity2RemoteId);
+        $this->assertEquals("/hello-world-2", $e2->getUrl());
     }
 }
