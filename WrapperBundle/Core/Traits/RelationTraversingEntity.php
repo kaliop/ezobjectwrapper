@@ -17,7 +17,7 @@ trait RelationTraversingEntity
      * @param string $fieldName
      * @return EntityInterface[]
      */
-    protected function getRelations($fieldName)
+    public function getRelations($fieldName)
     {
         $relatedEntities = array();
 
@@ -30,7 +30,7 @@ trait RelationTraversingEntity
         foreach($fieldValue->destinationContentIds as $contentId) {
             // Just in case the object has been pu tin the trash or hidden and they have not updated the related fields to remove from view.
             try {
-                $relatedContentItems[] = $this->getContentService()->loadContent($contentId);
+                $relatedContentItems[] = $this->getRepository()->getContentService()->loadContent($contentId);
             } catch (\Exception $e) {
             }
         }
@@ -46,17 +46,16 @@ trait RelationTraversingEntity
      * @param string $fieldName
      * @return EntityInterface
      */
-    protected function getRelation($fieldName)
+    public function getRelation($fieldName)
     {
         $fieldValue = $this->content()->getFieldValue($fieldName);
         if (! $fieldValue instanceof Relation\Value) {
             throw new \RuntimeException("Field '$fieldName' is not of type Relation");
         }
 
-        $relatedContentItem = $this->getContentService()->loadContent($fieldValue->destinationContentIds);
-
         /** @var \Kaliop\eZObjectWrapperBundle\Core\EntityManager $em */
         $em = $this->getEntityManager();
+        $relatedContentItem = $this->getRepository()->getContentService()->loadContent($fieldValue->destinationContentId);
         $relatedEntity = $em->load($relatedContentItem);
 
         return $relatedEntity;

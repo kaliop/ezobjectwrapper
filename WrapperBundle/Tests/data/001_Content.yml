@@ -29,6 +29,7 @@
     mode: create
     content_type: kwb_test_class
     parent_location: 2
+    remote_id: kwb_test_obj_1
     attributes:
         - name: hello world 1
     references:
@@ -40,6 +41,7 @@
     mode: create
     content_type: kwb_test_class
     parent_location: 2
+    remote_id: kwb_test_obj_2
     attributes:
         name: hello world 2
         relation: reference:kwb_test_obj_1

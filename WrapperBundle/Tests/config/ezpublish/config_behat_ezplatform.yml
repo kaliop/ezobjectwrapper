@@ -46,4 +46,5 @@ stash:
 
 ezobject_wrapper:
 
-    class_map: []
+    class_map:
+        kwb_test_class: Test\TestRepository
