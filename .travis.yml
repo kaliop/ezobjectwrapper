@@ -72,7 +72,7 @@ before_script:
   - ./WrapperBundle/Tests/setup/setup-config.sh ${EZ_VERSION} ${EZ_APP_DIR} ${EZ_KERNEL}
 
   # Set up contents as needed by the test
-  - ./WrapperBundle/Tests/setup/setup-content.sh
+  - ./WrapperBundle/Tests/setup/setup-content.sh ${EZ_VERSION} ${EZ_APP_DIR}
 
   # TODO are these needed at all?
   #- php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump
