@@ -29,7 +29,18 @@ parameters:
 ez_publish_legacy:
     root_dir: %kernel.root_dir%/../../ezpublish-legacy
 
-ezobject_wrapper:
+services:
+    ezobject_wrapper.repository.kwb_test_class:
+        class: Test\TestTraitsRepository
+        parent: ezobject_wrapper.repository.abstract
+        arguments:
+            - @ezpublish.api.repository
+            - @ezobject_wrapper.entity_manager
+        calls:
+            - [ setRichTextConverter, [ '@ezpublish.fieldType.ezxmltext.converter.html5' ] ]
+            - [ setRouter, [ '@router' ] ]
+        tags:
+            -  { name: ezobject_wrapper.repository, content_type: kwb_test_class }
 
-    class_map:
-        kwb_test_class: Test\TestRepository
+ezobject_wrapper:
+    class_map: []
