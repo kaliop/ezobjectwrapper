@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat kaliop:migration:migrate -n --path=WrapperBundle/Tests/data/001_Content.yml
+EZ_VERSION=$1
+EZ_APP_DIR=$2
+
+php vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/console --env=behat kaliop:migration:migrate -n --path=WrapperBundle/Tests/data/001_Content.yml
