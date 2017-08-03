@@ -22,6 +22,7 @@ class EntityManager
     protected $classMap;
     protected $serviceMap;
     protected $defaultClass;
+    protected $defaultService;
     protected $contentTypeIdentifierCache = array();
 
     /**
@@ -48,6 +49,15 @@ class EntityManager
     public function registerService(RepositoryInterface $service, $contentTypeIdentifier)
     {
         $this->serviceMap[$contentTypeIdentifier] = $service;
+    }
+
+    /**
+     * Registers an existing service to be used as default repository
+     * @var RepositoryInterface $service
+     */
+    public function registerDefaultService(RepositoryInterface $service)
+    {
+        $this->defaultService = $service;
     }
 
     /**
@@ -95,6 +105,11 @@ class EntityManager
         if (isset($this->classMap[$contentTypeIdentifier])) {
             $repoClass = $this->classMap[$contentTypeIdentifier];
             $repo = new $repoClass($this->repository, $this);
+            return $repo->setContentTypeIdentifier($contentTypeIdentifier);
+        }
+
+        if ($this->defaultService !== null) {
+            $repo = $this->defaultService;
             return $repo->setContentTypeIdentifier($contentTypeIdentifier);
         }
 

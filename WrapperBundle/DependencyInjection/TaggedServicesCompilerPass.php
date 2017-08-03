@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class TaggedServicesCompilerPass implements CompilerPassInterface
 {
     protected $entityManagerService = 'ezobject_wrapper.entity_manager';
+    protected $repositoryDefaultService = 'ezobject_wrapper.repository.default';
 
     public function process(ContainerBuilder $container)
     {
@@ -24,6 +25,13 @@ class TaggedServicesCompilerPass implements CompilerPassInterface
                     array(new Reference($id), $attributes["content_type"])
                 );
             }
+        }
+
+        if ($container->hasDefinition($this->repositoryDefaultService)) {
+            $definition->addMethodCall(
+                'registerDefaultService',
+                array(new Reference($this->repositoryDefaultService))
+            );
         }
     }
 }
