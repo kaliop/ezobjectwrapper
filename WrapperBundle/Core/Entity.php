@@ -29,6 +29,13 @@ class Entity implements EntityInterface
     protected $settings;
 
     /**
+     * Prioritized languages
+     *
+     * @var array
+     */
+    protected $languages;
+
+    /**
      * @param eZRepository $repository
      * @param Content $content
      * @param Location $location
@@ -48,6 +55,11 @@ class Entity implements EntityInterface
         $this->location = $location;
         $this->repository = $repository;
         $this->settings = $this->validateSettings($settings);
+    }
+
+    public function setLanguages(array $languages = null)
+    {
+        $this->languages = $languages;
     }
 
     /**
@@ -70,7 +82,7 @@ class Entity implements EntityInterface
     public function content()
     {
         if($this->content == null){
-            $this->content = $this->repository->getContentService()->loadContent($this->location->contentId);
+            $this->content = $this->repository->getContentService()->loadContent($this->location->contentId, $this->languages);
         }
         return $this->content;
     }

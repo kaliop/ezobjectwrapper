@@ -58,6 +58,13 @@ class Repository implements RepositoryInterface
     protected $settings;
     protected $logger;
 
+    /**
+     * Prioritized languages
+     *
+     * @var array
+     */
+    protected $languages;
+
     public function __construct(eZRepository $repository, $entityManager, array $settings=array(), $contentTypeIdentifier='')
     {
         $this->repository = $repository;
@@ -82,6 +89,11 @@ class Repository implements RepositoryInterface
     {
         $this->logger = $logger;
         return $this;
+    }
+
+    public function setLanguages(array $languages = null)
+    {
+        $this->languages = $languages;
     }
 
     /**
@@ -143,6 +155,9 @@ class Repository implements RepositoryInterface
         }
         if (is_callable(array($entity, 'setEntityManager'))) {
             $entity->setEntityManager($this->entityManager);
+        }
+        if (is_callable(array($entity, 'setLanguages'))) {
+            $entity->setLanguages($this->languages);
         }
         return $entity;
     }
