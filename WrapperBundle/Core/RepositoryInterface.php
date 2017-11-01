@@ -69,6 +69,16 @@ interface RepositoryInterface
     public function loadEntityFromLocationRemoteId($remoteId);
 
     /**
+     * This method is useful f.e. when you want to create an Entity that matches a given version and specific location.
+     * This happens notably when doing content previews, where eZ will inject into your controllers both of them.
+     *
+     * @param Content $content
+     * @param Location $location
+     * @return \Kaliop\eZObjectWrapperBundle\Core\EntityInterface
+     */
+    public function loadEntityFromContentAndLocation(Content $content, Location $location);
+
+    /**
      * Called by the Entity Manager when retrieving the repo service / creating the repo instance
      * @param string $contentTypeIdentifier
      * @return $this

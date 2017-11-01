@@ -172,6 +172,21 @@ class Repository implements RepositoryInterface
     }
 
     /**
+     * This method is useful f.e. when you want to create an Entity that matches a given version and specific location.
+     * This happens notably when doing content previews, where eZ will inject into your controllers both of them.
+     *
+     * @param Content $content
+     * @param Location $location
+     * @return \Kaliop\eZObjectWrapperBundle\Core\EntityInterface
+     */
+    public function loadEntityFromContentAndLocation(Content $content, Location $location)
+    {
+        $class = $this->entityClass;
+        $entity = new $class($this->repository, $content, $location);
+        return $this->enrichEntityAtLoad($entity);
+    }
+
+    /**
      * @param ContentInfo $contentInfo
      * @return \Kaliop\eZObjectWrapperBundle\Core\EntityInterface
      */
