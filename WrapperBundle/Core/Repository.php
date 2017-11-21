@@ -52,10 +52,14 @@ class Repository implements RepositoryInterface
     // Name of the php class used to create entities. Subclasses have to set a value to this, to be able to create entities
     protected $entityClass;
 
+    /** @var eZRepository $repository */
     protected $repository;
     protected $entityManager;
+    /** @var string $contentTypeIdentifier */
     protected $contentTypeIdentifier;
+    /** @var array $settings */
     protected $settings;
+    /** @var LoggerInterface $logger */
     protected $logger;
 
     public function __construct(eZRepository $repository, $entityManager, array $settings=array(), $contentTypeIdentifier='')
