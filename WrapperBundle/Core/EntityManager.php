@@ -43,10 +43,16 @@ class EntityManager
     /**
      * Registers an existing service to be used as repository for a given content type
      * @var RepositoryInterface $service
-     * @var string $contentTypeIdentifier
+     * @var string $contentTypeIdentifier when null, we will ask the Repository to see if it already has its own $contentTypeIdentifier set up
      */
     public function registerService(RepositoryInterface $service, $contentTypeIdentifier)
     {
+        if ($contentTypeIdentifier == null && is_callable(array($service, 'getContentTypeIdentifier'))) {
+            $contentTypeIdentifier = $service->getContentTypeIdentifier();
+        }
+        if ($contentTypeIdentifier == null) {
+            throw new \InvalidArgumentException("Service can not be registered as repository for NULL Content Type Identifier");
+        }
         $this->serviceMap[$contentTypeIdentifier] = $service;
     }
 
@@ -56,12 +62,15 @@ class EntityManager
      * @var string $contentTypeIdentifier
      * @throws \InvalidArgumentException
      *
-     * @todo validate contentTypeIdentifier as well. Reject null identifier and integers (unless 0 isa valid content type identifier...)
+     * @todo improve validation of contentTypeIdentifiers (is '0' a valid content type identifier?...)
      */
     public function registerClass($className, $contentTypeIdentifier)
     {
         if (!is_subclass_of($className, '\Kaliop\eZObjectWrapperBundle\Core\RepositoryInterface')) {
             throw new \InvalidArgumentException("Class '$className' can not be registered as repository because it lacks the necessary interface");
+        }
+        if ($contentTypeIdentifier == null) {
+            throw new \InvalidArgumentException("Class '$className' can not be registered as repository for NULL Content Type Identifier");
         }
         $this->classMap[$contentTypeIdentifier] = $className;
     }
@@ -74,7 +83,7 @@ class EntityManager
     public function registerDefaultClass($className)
     {
         if (!is_subclass_of($className, '\Kaliop\eZObjectWrapperBundle\Core\RepositoryInterface')) {
-            throw new \InvalidArgumentException("Class '$className' can not be registered as repository because it lacks the necessary interface");
+            throw new \InvalidArgumentException("Class '$className' can not be registered as default repository because it lacks the necessary interface");
         }
         $this->defaultClass = $className;
     }

@@ -19,9 +19,10 @@ class TaggedServicesCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('ezobject_wrapper.repository');
         foreach ($taggedServices as $id => $tags) {
             foreach ($tags as $attributes) {
+                /// @todo validate the keys in $attributes, for courtesy to users
                 $definition->addMethodCall(
                     'registerService',
-                    array(new Reference($id), $attributes["content_type"])
+                    array(new Reference($id), @$attributes["content_type"])
                 );
             }
         }

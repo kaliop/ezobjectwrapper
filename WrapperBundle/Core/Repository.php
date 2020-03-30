@@ -70,10 +70,20 @@ class Repository implements RepositoryInterface
         $this->contentTypeIdentifier = $contentTypeIdentifier;
     }
 
+    /**
+     * @param string $contentTypeIdentifier
+     * @return $this|RepositoryInterface
+     * @todo we could disallow setting a $contentTypeIdentifier when it was already set...
+     */
     public function setContentTypeIdentifier($contentTypeIdentifier)
     {
         $this->contentTypeIdentifier = $contentTypeIdentifier;
         return $this;
+    }
+
+    public function getContentTypeIdentifier()
+    {
+        return $this->contentTypeIdentifier;
     }
 
     public function setSettings(array $settings)
