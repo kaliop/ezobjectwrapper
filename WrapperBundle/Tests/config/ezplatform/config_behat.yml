@@ -1,17 +1,23 @@
 
-# This file will be appended to the equivalent one from eZPlatform distribution
+# This file will replace (and then include) the equivalent one from eZPlatform distribution
+# Used to set up an eZPlatform env from scratch for testing purposes (eg. on Travis)
+
+imports:
+    - { resource: config_behat_orig.yml }
+    - { resource: config_behat.php }
 
 parameters:
-    ezpublish.kernel.root_dir: %kernel.root_dir%/../../ezpublish-kernel
+    ezpublish.kernel.root_dir: '%kernel.root_dir%/../../ezpublish-kernel'
 
 doctrine:
     dbal:
         connections:
             default:
                 driver: pdo_mysql
-                host: localhost
-                user: root
-                dbname: behattestdb
+                host: '%database_host%'
+                user: '%database_user%'
+                password: '%database_password%'
+                dbname: '%database_name%'
                 charset: UTF8
 
 ezpublish:
@@ -43,6 +49,12 @@ stash:
             drivers: [ FileSystem ]
             inMemory: true
             registerDoctrineAdapter: false
+
+swiftmailer:
+    disable_delivery: false
+    spool:
+        type: file
+        path: '%kernel.root_dir%/spool'
 
 services:
     ezobject_wrapper.repository.kwb_test_class:
