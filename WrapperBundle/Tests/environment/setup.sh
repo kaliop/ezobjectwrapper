@@ -46,13 +46,13 @@ fi
 if [ "$CODE_COVERAGE" = "1" -a "$XDEBUG_INI" != "" ]; then mv "$XDEBUG_INI.bak" "$XDEBUG_INI"; fi
 
 # Create the database from sql files present in either the legacy stack or kernel
-./WrapperBundle/Tests/setup/create-db.sh
+./WrapperBundle/Tests/environment/create-db.sh
 
 # Set up configuration files
-./WrapperBundle/Tests/setup/setup-ez-config.sh
+./WrapperBundle/Tests/environment/setup-ez-config.sh
 
 # Set up contents as needed by the test
-./WrapperBundle/Tests/setup/setup-content.sh ${EZ_VERSION} ${EZ_APP_DIR}
+./WrapperBundle/Tests/environment/setup-content.sh
 
 # TODO are these needed at all?
 #php vendor/ezsystems/ezpublish-community/ezpublish/console --env=behat assetic:dump

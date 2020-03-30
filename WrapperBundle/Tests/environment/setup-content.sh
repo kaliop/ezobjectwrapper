@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 
-EZ_VERSION=$1
-EZ_APP_DIR=$2
+if [ "${EZ_VERSION}" = "ezplatform3" ]; then
+    APP_DIR=vendor/ezsystems/ezplatform
+elif [ "${EZ_VERSION}" = "ezplatform2" ]; then
+    APP_DIR=vendor/ezsystems/ezplatform
+elif [ "${EZ_VERSION}" = "ezplatform" ]; then
+    APP_DIR=vendor/ezsystems/ezplatform
+elif [ "${EZ_VERSION}" = "ezpublish-community" ]; then
+    APP_DIR=vendor/ezsystems/ezpublish-community
+else
+    echo "Unsupported eZ version: ${EZ_VERSION}"
+    exit 1
+fi
 
-php vendor/ezsystems/${EZ_VERSION}/${EZ_APP_DIR}/console --env=behat kaliop:migration:migrate -n -u --path=WrapperBundle/Tests/data/001_Content.yml
+php ${APP_DIR}/console --env=behat kaliop:migration:migrate -n -u --path=WrapperBundle/Tests/data/001_Content.yml
