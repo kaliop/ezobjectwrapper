@@ -69,7 +69,7 @@ class Entity implements EntityInterface
      */
     public function content()
     {
-        if($this->content == null){
+        if ($this->content == null) {
             $this->content = $this->repository->getContentService()->loadContent($this->location->contentId);
         }
         return $this->content;
@@ -81,7 +81,7 @@ class Entity implements EntityInterface
      */
     public function location()
     {
-        if($this->location == null){
+        if ($this->location == null) {
             $this->location = $this->repository->getLocationService()->loadLocation($this->content->contentInfo->mainLocationId);
         }
         return $this->location;

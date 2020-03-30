@@ -28,7 +28,7 @@ trait EntityManagerAwareEntity
     }
 
     /**
-     * An helper function made available for subclasses of Entity: returns the repository used for the current entity
+     * A helper function made available for subclasses of Entity: returns the repository used for the current entity
      *
      * @return \Kaliop\eZObjectWrapperBundle\Core\RepositoryInterface
      */
