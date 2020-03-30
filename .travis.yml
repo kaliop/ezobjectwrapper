@@ -23,20 +23,20 @@ env:
 matrix:
   include:
     - php: 5.6
-      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.1 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community EZ_APP_DIR=ezpublish EZ_KERNEL=EzPublishKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.1 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community KERNEL_CLASS=EzPublishKernel KERNEL_DIR=vendor/ezsystems/ezpublish-community/ezpublish CODE_COVERAGE=0
 
     # eZPlatform 1 aka eZPublish 6 - earliest LTS release is 1.7
     - php: 7.0
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.9 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.9 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
     # last version available of eZPlatform 1 - also an LTS
     - php: 7.1
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.13.5 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=1
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.13.5 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=1
 
     - php: 7.2
-      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
     # latest version currently available of eZPlatform 2 - currently 2.5, which is also LTS
     - php: 7.3
-      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.3 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 EZ_APP_DIR=app EZ_KERNEL=AppKernel CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.3 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
 
   #allow_failures:
     # this currently fails because of eZPublish services.yml not quoting usage of @, despite it being tested with Sf 2.8...
