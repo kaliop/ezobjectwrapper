@@ -1,6 +1,6 @@
 # eZObjectWrapperBundle
 
-A Symfony Bundle for eZ Publish 5 development (>=5.3).
+A Symfony Bundle for eZPlatform / eZPublish 5 development (>=5.3).
 
 Developed by the [Kaliop](http://www.kaliop.com/) team.
 
@@ -10,12 +10,13 @@ Developed by the [Kaliop](http://www.kaliop.com/) team.
 This bundle offers a simple model to organize all the "business logic" code which deals with eZPublish Location and
 Content objects, keeping it away from Controllers, Commands and other application layers which relate to the Framework.
 
-This way, if you change the definition of one of your ContentTypes, you will not have to hunt across the whole codebase,
+This way, if you change the definition of one of your ContentTypes, you will not have to hunt across the whole codebase
 to apply fixes but, ideally, change the code only in one place.
 
 It also tries to adopt patterns which are familiar to Symfony developers who have not used eZPublish before.
 NB: if you are a Symfony developer please read the *This is not your grandpa's ORM* chapter further down to help avoid
 common pitfalls.
+
 
 ## How it works
 
@@ -27,7 +28,7 @@ Content, a different Repository service is used.
 
 *Entity* instances provide a lazy-loading wrapper for Contents and Locations. They are supposed to hold the logic to
 decode data from the Content Fields, and to fetch related Entities (without overloading the view Controller and creating
-a new kernel request). They are generally not configured as Symfony services.
+a new kernel request). They are generally _not_ configured as Symfony services (for a starter, they are not singletons).
 
 Developers are supposed to create a new Repository and Entity class for each of the Content Types in use in the website;
 the easiest way to do so is to subclass the existing ones and just add in the custom business logic.
@@ -59,6 +60,7 @@ The recommended way to install this bundle is through [Composer](http://getcompo
 new \Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle(),
 ```
 
+
 ## Usage
 
 ### Retrieving Entities
@@ -82,7 +84,7 @@ and even Remote Ids.
 
 ### Twig function render_location
 
-This does render a Location without using a separate Controller and reloading the kenel
+This does render a Location without using a separate Controller and reloading the kernel
 
 ```twig
 {{ render_location(locationId, 'view_type', {}) }}
@@ -271,7 +273,7 @@ class Newsletter extends BaseEntity
      */
     public function setIssueTypeIdentifier($issueTypeIdentifier)
     {
-        $this->issueTypeIdentifier = $issueTypeIdentifier
+        $this->issueTypeIdentifier = $issueTypeIdentifier;
         return $this;
     }
 }
