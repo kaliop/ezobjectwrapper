@@ -3,8 +3,9 @@
 <phpunit bootstrap="./WrapperBundle/Tests/bootstrap.php">
 
     <php>
-        <server name="KERNEL_DIR" value="vendor/ezsystems/ezpublish-community/ezpublish" />
-        <server name="SYMFONY_ENV" value="behat" />
+        <!-- the following have been moved to env vars, as they might vary depending on setups -->
+        <!--<server name="KERNEL_DIR" value="vendor/ezsystems/ezpublish-community/ezpublish" />
+        <server name="SYMFONY_ENV" value="behat" />-->
 
         <!-- we allow some deprecation warnings to go through -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="1000" />
@@ -21,5 +22,11 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <testsuites>
+        <testsuite name="Kaliop eZObjectWrapperBundle Test Suite">
+            <directory>./WrapperBundle/Tests/phpunit/</directory>
+        </testsuite>
+    </testsuites>
 
 </phpunit>

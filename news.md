@@ -1,9 +1,16 @@
+Ver 4.1
+
+* allow to specify the Content Type Identifier only in the Service constructor instead of the `ezobject_wrapper.repository` tag
+
+* added a new method to the base Repository Class: `getContentTypeIdentifier`
+
+
 Ver 4.0
 
 * added a new method to the base Repository Class and Interface: `loadEntityFromContentAndLocation`
     This method is useful f.e. when you want to create an Entity that matches a given version and specific location;
     that happens notably when doing content previews, where eZ will inject into your controllers both of them.
-    
+
     Since we changed an Interface, we consider this to be an API breackage, and had to increase the major version nr.
 
 
