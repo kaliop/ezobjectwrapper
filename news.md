@@ -1,3 +1,8 @@
+Ver XX
+
+* add php 7.4 to the tests matrix
+
+
 Ver 4.1
 
 * allow to specify the Content Type Identifier only in the Service constructor instead of the `ezobject_wrapper.repository` tag
