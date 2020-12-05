@@ -1,5 +1,9 @@
 /.idea/
-/vendor/
+/.euts*
 /composer
 /composer.lock
 /composer.phar
+/composer_*.json
+/composer_*.lock
+/vendor/
+/vendor_*/
