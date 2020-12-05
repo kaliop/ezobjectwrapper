@@ -8,49 +8,58 @@ services:
 env:
   global:
     - SYMFONY_ENV=behat
-    - MYSQL_USER=ezp
-    - MYSQL_PASSWORD=ezp
-    - MYSQL_DATABASE=behattestdb
-    - MYSQL_HOST=localhost
+    - DB_HOST=localhost
+    - DB_TYPE=mysql
+    - DB_EZ_USER=ezp
+    - DB_EZ_PASSWORD=ezp
+    - DB_EZ_DATABASE=behattestdb
 
-# NB: see https://support.ez.no/Public/Service-Life for EOL dates of eZPublish versions
+# NB: see https://support.ibexa.co/Public/Service-Life for EOL dates of eZPublish versions
 #     and http://php.net/supported-versions.php for EOL dates of PHP versions
 # About php versions:
-#     - php 5.6 can be installed on RHEL/CentOS 6, which is the oldest currently supported (see at the bottom of https://access.redhat.com/support/policy/updates/errata)
-#     - Debian 8 comes with php 5.6 too - although it is in LTS support by now
+#     - php 5.6 _can_ be installed from epel/remi repos on RHEL/CentOS 6, which is the oldest currently supported (see at the bottom of https://access.redhat.com/support/policy/updates/errata)
+#     - Debian 8 comes with php 5.6 too - although it is _abandonware_ by now
+#     - Ubuntu 14 comes with php 5.5, and it is in extended support (ESM) until 2022. It might be possible to update it php 5.6 via ondrej ppa
 # We thus still test on php 5.6
 # We limit the matrix to one version of eZPublish for each version of PHP
+# @todo where we have 2 minor versions of the same 'main version' tested, we should test the lower numbered one forcing composer to use the oldest possible dependencies
 matrix:
   include:
     - php: 5.6
-      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.1 ezsystems/behatbundle:~5.4' EZ_VERSION=ezpublish-community KERNEL_CLASS=EzPublishKernel KERNEL_DIR=vendor/ezsystems/ezpublish-community/ezpublish CODE_COVERAGE=0
+      env: EZ_PACKAGES='ezsystems/ezpublish-community:~2014.11.1 ezsystems/behatbundle:~5.4' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle Kaliop\eZMigrationBundle\EzMigrationBundle' EZ_TEST_CONFIG_SYMFONY=WrapperBundle/Tests/config/config_behat_bundle.yml
 
     # eZPlatform 1 aka eZPublish 6 - earliest LTS release is 1.7
     - php: 7.0
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.9 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
-    # last version available of eZPlatform 1 - also an LTS
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.7.9 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle' EZ_TEST_CONFIG_SYMFONY=WrapperBundle/Tests/config/config_behat_bundle.yml
+    # last LTS version available of eZPlatform 1 - also an LTS
     - php: 7.1
-      env: EZ_PACKAGES='ezsystems/ezplatform:~1.13.5 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_VERSION=ezplatform KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=1
+      env: EZ_PACKAGES='ezsystems/ezplatform:~1.13.5 ezsystems/ezplatform-xmltext-fieldtype:^1.1 ezsystems/behatbundle:~6.3' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle' EZ_TEST_CONFIG_SYMFONY=WrapperBundle/Tests/config/config_behat_bundle.yml
 
+    # eZPlatform 2 aka eZPublish 7
     - php: 7.2
-      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
-    # latest version currently available of eZPlatform 2 - currently 2.5, which is also LTS
+      env: EZ_PACKAGES='ezsystems/ezplatform:~2.3.2 ezsystems/ezplatform-xmltext-fieldtype:^1.7 ezsystems/behatbundle:~6.5' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
+    # next-to-latest version currently available of eZPlatform 2
     - php: 7.3
-      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.9 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_VERSION=ezplatform2 KERNEL_CLASS=AppKernel KERNEL_DIR=vendor/ezsystems/ezplatform/app CODE_COVERAGE=0
-
+      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
+    # latest version currently available of eZPlatform 2 - currently 2.5, which is also LTS
+    - php: 7.4
+      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.15 ezsystems/ezplatform-xmltext-fieldtype:^1.9 ezsystems/behatbundle:~7.0' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
   #allow_failures:
     # this currently fails because of eZPublish services.yml not quoting usage of @, despite it being tested with Sf 2.8...
     #- php: 7.0
 
-#before_install:
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y zip unzip
   # No need for a web server, until we start testing using Selenium
-  #- sudo apt-get update -qq
   #- sudo apt-get install -qq -y --force-yes apache2 libapache2-mod-fastcgi
 
 install:
-  # just in case...
-  - chmod 755 ./WrapperBundle/Tests/environment/*.sh
-  - travis_wait ./WrapperBundle/Tests/environment/setup.sh
+    - git clone --depth 1 --branch 0.1.0 https://github.com/tanoconsulting/euts.git teststack
+    # just in case...
+    - chmod 755 ./teststack/bin/*.sh  ./teststack/bin/setup/*.sh
+    - ./teststack/bin/setup.sh
+    - ./teststack/bin/sfconsole.sh --env=behat kaliop:migration:migrate -n -u --path=./WrapperBundle/Tests/data/001_Content.yml
 
 script:
   # Finally! :-D
