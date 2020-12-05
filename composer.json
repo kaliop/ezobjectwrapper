@@ -17,6 +17,7 @@
         "codeclimate/php-test-reporter": "~0.4",
         "kaliop/ezmigrationbundle": "^5.10.1",
         "phpunit/phpunit": "^4.8 || ^5.7 || ^7.5",
+        "roave/security-advisories": "dev-disablechecks as dev-master",
         "symfony/phpunit-bridge": "*"
     },
     "autoload": {
