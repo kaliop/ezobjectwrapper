@@ -3,8 +3,8 @@ services:
         class: Test\TestTraitsRepository
         parent: ezobject_wrapper.repository.abstract
         arguments:
-            - @ezpublish.api.repository
-            - @ezobject_wrapper.entity_manager
+            - '@ezpublish.api.repository'
+            - '@ezobject_wrapper.entity_manager'
         calls:
             - [ setRichTextConverter, [ '@ezpublish.fieldType.ezxmltext.converter.html5' ] ]
             - [ setRouter, [ '@router' ] ]
