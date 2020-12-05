@@ -37,13 +37,13 @@ matrix:
 
     # eZPlatform 2 aka eZPublish 7
     - php: 7.2
-      env: EZ_PACKAGES='ezsystems/ezplatform:~2.3.2 ezsystems/ezplatform-xmltext-fieldtype:^1.7 ezsystems/behatbundle:~6.5' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
+      env: EZ_PACKAGES='ezsystems/ezplatform:~2.3.2 ezsystems/ezplatform-xmltext-fieldtype:^1.7 ezsystems/behatbundle:~6.5 sensio/generator-bundle' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
     # next-to-latest version currently available of eZPlatform 2
     - php: 7.3
-      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
+      env: EZ_PACKAGES='ezsystems/ezplatform:~2.4.2 ezsystems/ezplatform-xmltext-fieldtype:^1.8 ezsystems/behatbundle:~6.5 sensio/generator-bundle' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
     # latest version currently available of eZPlatform 2 - currently 2.5, which is also LTS
     - php: 7.4
-      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.15 ezsystems/ezplatform-xmltext-fieldtype:^1.9 ezsystems/behatbundle:~7.0' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
+      env: EZ_PACKAGES='ezsystems/ezplatform:^2.5.15 ezsystems/ezplatform-xmltext-fieldtype:^1.9 ezsystems/behatbundle:~7.0 sensio/generator-bundle' EZ_BUNDLES='Kaliop\eZObjectWrapperBundle\KaliopeZObjectWrapperBundle EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle Kaliop\eZMigrationBundle\EzMigrationBundle'
   #allow_failures:
     # this currently fails because of eZPublish services.yml not quoting usage of @, despite it being tested with Sf 2.8...
     #- php: 7.0
