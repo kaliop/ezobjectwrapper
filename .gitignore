@@ -5,5 +5,5 @@
 /composer.phar
 /composer_*.json
 /composer_*.lock
-/vendor/
-/vendor_*/
+/phpunit.xml
+/vendor
