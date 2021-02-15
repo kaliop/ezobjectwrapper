@@ -21,6 +21,11 @@ services:
 
     twig.extension.ezobject_wrapper:
         class: Kaliop\eZObjectWrapperBundle\Twig\eZObjectWrapperExtension
-        arguments: ['@service_container']
+        arguments:
+            - '@ezpublish.api.repository'
+            - '@ezpublish.view_manager'
         tags:
             - { name: twig.extension }
+
+    # autowiring
+    Kaliop\eZObjectWrapperBundle\Core\EntityManager: '@ezobject_wrapper.entity_manager'
