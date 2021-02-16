@@ -2,46 +2,78 @@
 
 namespace Kaliop\eZObjectWrapperBundle\Twig;
 
+use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\Core\MVC\Symfony\View\ViewManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class eZObjectWrapperExtension extends \Twig_Extension
+class eZObjectWrapperExtension extends AbstractExtension
 {
-    private $container;
+    /**
+     * @var Repository
+     */
+    private $repository;
 
     /**
-     * @param ContainerInterface $container
+     * @var ViewManagerInterface
      */
-    public function __construct(ContainerInterface $container)
+    private $viewManager;
+
+    /**
+     * @param Repository $repository
+     * @param ViewManagerInterface $viewManager
+     */
+    public function __construct(Repository $repository, ViewManagerInterface $viewManager)
     {
-        $this->container = $container;
+        $this->repository = $repository;
+        $this->viewManager = $viewManager;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('render_location', array($this,'renderLocation'), array('is_safe' => array('html'))),
+            new TwigFunction('render_location', array($this,'renderLocation'), array('is_safe' => array('html'))),
+            new TwigFunction('render_content', array($this,'renderContent'), array('is_safe' => array('html'))),
         );
     }
 
     /**
      * Render a location according to the viewType and the ContentType set in override.yml, without doing a sub-request.
-     * Note: we can NOT inject directly the 'ezpublish.controller.content.view' service because it generates a ServiceCircularReferenceException
      *
      * @param int $locationID
      * @param string $viewType
      * @param array $params
+     *
      * @return string generally it is safe html and does not need to be further encoded/escaped
      */
     public function renderLocation($locationID, $viewType, $params = array())
     {
-        $rendering = $this->container->get('ezpublish.controller.content.view')
-            ->viewLocation($locationID, $viewType, false, $params);
-
-        return $rendering->getContent();
+        return $this->viewManager->renderLocation(
+            $this->repository->getLocationService()->loadLocation($locationID),
+            $viewType,
+            $params
+        );
     }
 
-    public function getName()
+    /**
+     * Render a content according to the viewType and the ContentType set in override.yml, without doing a sub-request.
+     *
+     * @param int $contentID
+     * @param string $viewType
+     * @param array $params
+     *
+     * @return string generally it is safe html and does not need to be further encoded/escaped
+     */
+    public function renderContent($contentID, $viewType, $params = array())
     {
-        return 'ezobject_wrapper_extension';
+        return $this->viewManager->renderContent(
+            $this->repository->getContentService()->loadContent($contentID),
+            $viewType,
+            $params
+        );
     }
 }
